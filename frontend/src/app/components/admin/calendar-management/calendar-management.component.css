@@ -1,0 +1,352 @@
+.calendar-management-container {
+  padding: 20px;
+}
+
+/* Estilos para tarjetas */
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Estilos para la tabla */
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  color: #495057;
+  padding: 12px;
+}
+
+.table td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Badges personalizados por tipo de evento */
+.badge {
+  font-size: 0.8rem;
+  padding: 0.5em 0.8em;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.badge.bg-success {
+  background-color: #28a745 !important;
+}
+
+.badge.bg-primary {
+  background-color: var(--belgrano-celeste) !important;
+}
+
+.badge.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+}
+
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* Badges de estado especiales */
+.badge:has(.fa-check) {
+  background-color: #28a745 !important;
+}
+
+.badge:has(.fa-times) {
+  background-color: #dc3545 !important;
+}
+
+/* Botones */
+.btn-belgrano-celeste {
+  background-color: var(--belgrano-celeste);
+  border-color: var(--belgrano-celeste);
+  color: white;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-belgrano-celeste:hover {
+  background-color: #0288d1;
+  border-color: #0288d1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 174, 239, 0.3);
+}
+
+.btn-group .btn {
+  border-radius: 6px !important;
+  margin-right: 2px;
+}
+
+.btn-group .btn:last-child {
+  margin-right: 0;
+}
+
+/* Estados de eventos especiales */
+.event-today {
+  border-left: 4px solid #ffc107;
+  background-color: #fff3cd;
+}
+
+.event-upcoming {
+  border-left: 4px solid #17a2b8;
+  background-color: #d1ecf1;
+}
+
+.event-past {
+  opacity: 0.7;
+}
+
+/* Modal personalizado */
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--belgrano-celeste), #0288d1);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
+  padding: 20px 24px;
+}
+
+.modal-header .btn-close {
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+.modal-header .btn-close:hover {
+  opacity: 1;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  padding: 20px 24px;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Formularios */
+.form-control, .form-select {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--belgrano-celeste);
+  box-shadow: 0 0 0 0.2rem rgba(0, 174, 239, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+/* Input groups */
+.input-group-text {
+  background-color: var(--belgrano-celeste);
+  color: white;
+  border: 2px solid var(--belgrano-celeste);
+  border-right: none;
+}
+
+.input-group .form-control {
+  border-left: none;
+}
+
+.input-group .form-control:focus {
+  border-left: none;
+}
+
+/* Textarea específico */
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Estados de carga */
+.spinner-border-belgrano {
+  color: var(--belgrano-celeste);
+}
+
+/* Alertas */
+.alert {
+  border-radius: 8px;
+  border: none;
+  padding: 16px 20px;
+}
+
+.alert-info {
+  background-color: #e3f2fd;
+  color: #0277bd;
+  border-left: 4px solid #03a9f4;
+}
+
+/* Estados empty */
+.text-center i.fa-3x {
+  opacity: 0.5;
+  color: #6c757d;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .calendar-management-container {
+    padding: 15px;
+  }
+  
+  .modal-dialog {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+  
+  .modal-body {
+    padding: 20px 16px;
+  }
+  
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-group .btn {
+    margin-right: 0;
+    margin-bottom: 4px;
+    border-radius: 6px !important;
+  }
+  
+  .btn-group .btn:last-child {
+    margin-bottom: 0;
+  }
+  
+  .d-flex.gap-2 {
+    gap: 0.5rem !important;
+  }
+}
+
+/* Vista móvil específica */
+@media (max-width: 576px) {
+  .d-flex.gap-2 {
+    flex-direction: column;
+  }
+  
+  .d-flex.gap-2 .btn {
+    margin-bottom: 0.25rem;
+  }
+  
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.4em 0.6em;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .management-header h2 {
+    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .controls-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .search-container {
+    min-width: auto;
+  }
+  
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .event-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .modal-content {
+    margin: 0.5rem;
+    max-width: none;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .event-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .btn-sm {
+    flex: 1;
+    justify-content: center;
+  }
+} 

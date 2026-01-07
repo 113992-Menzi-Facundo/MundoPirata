@@ -1,0 +1,416 @@
+<!-- Gestión de Mapa -->
+<div class="map-management">
+  <!-- Header con navegación -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">
+      <i class="fas fa-map-marked-alt me-2 text-belgrano-celeste"></i>
+      Gestión del Mapa
+    </h4>
+    <div class="btn-toolbar">
+      <button class="btn btn-belgrano-celeste" (click)="openCreateModal()">
+        <i class="fas fa-plus me-2"></i>Nueva Ubicación
+      </button>
+      <button class="btn btn-outline-secondary ms-2" (click)="loadLocations()" [disabled]="isLoading">
+        <i class="fas fa-sync-alt me-1" [class.fa-spin]="isLoading"></i>
+        Actualizar
+      </button>
+    </div>
+  </div>
+
+  <!-- Estadísticas resumidas -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <div class="stat-icon text-belgrano-celeste mb-2">
+            <i class="fas fa-map-marked-alt fa-2x"></i>
+          </div>
+          <h5 class="text-belgrano-celeste mb-1">{{ locations.length }}</h5>
+          <small class="text-muted">Total Ubicaciones</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <div class="stat-icon text-success mb-2">
+            <i class="fas fa-eye fa-2x"></i>
+          </div>
+          <h5 class="text-success mb-1">{{ getActiveLocationsCount() }}</h5>
+          <small class="text-muted">Visibles</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <div class="stat-icon text-warning mb-2">
+            <i class="fas fa-eye-slash fa-2x"></i>
+          </div>
+          <h5 class="text-warning mb-1">{{ getInactiveLocationsCount() }}</h5>
+          <small class="text-muted">Ocultas</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <div class="stat-icon text-info mb-2">
+            <i class="fas fa-filter fa-2x"></i>
+          </div>
+          <h5 class="text-info mb-1">{{ filteredLocations.length }}</h5>
+          <small class="text-muted">Filtradas</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros y búsqueda -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">
+            <i class="fas fa-search me-1"></i>
+            Buscar ubicaciones
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-search"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Buscar por nombre, dirección o descripción..."
+              [(ngModel)]="searchTerm"
+              (input)="onSearchChange()">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">
+            <i class="fas fa-filter me-1"></i>
+            Estado
+          </label>
+          <select 
+            class="form-select" 
+            [(ngModel)]="stateFilter"
+            (change)="onStateFilterChange()">
+            <option value="all">Todas las ubicaciones</option>
+            <option value="active">Solo visibles</option>
+            <option value="inactive">Solo ocultas</option>
+          </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button class="btn btn-outline-belgrano-celeste w-100" (click)="clearFilters()">
+            <i class="fas fa-times me-1"></i>Limpiar Filtros
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-belgrano-celeste" style="width: 3rem; height: 3rem;"></div>
+    <p class="mt-3 text-muted">Cargando ubicaciones...</p>
+  </div>
+
+  <!-- Lista de ubicaciones -->
+  <div *ngIf="!isLoading" class="card">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <i class="fas fa-list me-2"></i>
+        Ubicaciones encontradas: {{ filteredLocations.length }}
+      </h5>
+    </div>
+    <div class="card-body p-0">
+      <!-- Vista móvil -->
+      <div class="d-block d-md-none">
+        <div *ngFor="let location of filteredLocations" class="location-item-mobile border-bottom p-3">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div class="flex-grow-1">
+              <h6 class="mb-1 text-belgrano-celeste">{{ location.name }}</h6>
+              <small class="text-muted d-block">
+                <i class="fas fa-map-marker-alt me-1"></i>
+                {{ location.address }}
+              </small>
+              <small class="text-muted d-block" *ngIf="location.description">
+                {{ truncateText(location.description, 80) }}
+              </small>
+            </div>
+            <span class="badge" [ngClass]="location.state ? 'bg-success' : 'bg-warning'">
+              <i class="fas" [ngClass]="location.state ? 'fa-eye' : 'fa-eye-slash'" class="me-1"></i>
+              {{ location.state ? 'Visible' : 'Oculta' }}
+            </span>
+          </div>
+          <div class="mb-2">
+            <small class="text-muted">
+              <i class="fas fa-user me-1"></i>
+              {{ location.authorName }}
+            </small>
+            <small class="text-muted ms-3">
+              <i class="fas fa-calendar me-1"></i>
+              {{ formatDate(location.createdAt) }}
+            </small>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button 
+              class="btn btn-sm btn-outline-info"
+              (click)="openGoogleMaps(location.googleMapsUrl)"
+              *ngIf="location.googleMapsUrl"
+              title="Ver en Google Maps">
+              <i class="fas fa-external-link-alt me-1"></i>Maps
+            </button>
+            <button 
+              class="btn btn-sm btn-outline-belgrano-celeste"
+              (click)="openEditModal(location)">
+              <i class="fas fa-edit me-1"></i>Editar
+            </button>
+            <button 
+              class="btn btn-sm"
+              [ngClass]="location.state ? 'btn-outline-warning' : 'btn-outline-success'"
+              (click)="toggleLocationState(location)">
+              <i class="fas" [ngClass]="location.state ? 'fa-eye-slash' : 'fa-eye'" class="me-1"></i>
+              {{ location.state ? 'Ocultar' : 'Mostrar' }}
+            </button>
+            <button 
+              class="btn btn-sm btn-outline-danger"
+              (click)="deleteLocation(location)">
+              <i class="fas fa-trash me-1"></i>Eliminar
+            </button>
+          </div>
+        </div>
+        
+        <div *ngIf="filteredLocations.length === 0" class="text-center py-4">
+          <i class="fas fa-map-marked-alt text-muted fa-3x mb-3"></i>
+          <p class="text-muted">No se encontraron ubicaciones</p>
+          <p class="text-muted" *ngIf="searchTerm || stateFilter !== 'all'">
+            Prueba ajustando los filtros de búsqueda
+          </p>
+          <button 
+            *ngIf="!searchTerm && stateFilter === 'all'" 
+            class="btn btn-belgrano-celeste"
+            (click)="openCreateModal()">
+            <i class="fas fa-plus me-1"></i>Crear Primera Ubicación
+          </button>
+        </div>
+      </div>
+
+      <!-- Vista desktop -->
+      <div class="d-none d-md-block">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Ubicación</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th>Autor</th>
+                <th>Fecha</th>
+                <th width="180">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let location of filteredLocations" [class.table-warning]="!location.state">
+                <td>
+                  <div class="location-info">
+                    <div class="fw-bold text-belgrano-celeste">{{ location.name }}</div>
+                    <small class="text-muted" *ngIf="location.description">
+                      {{ truncateText(location.description, 60) }}
+                    </small>
+                  </div>
+                </td>
+                <td>
+                  <div class="address-info">
+                    <i class="fas fa-map-marker-alt text-muted me-1"></i>
+                    {{ location.address }}
+                  </div>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="location.state ? 'bg-success' : 'bg-warning'">
+                    <i class="fas" [ngClass]="location.state ? 'fa-eye' : 'fa-eye-slash'" class="me-1"></i>
+                    {{ location.state ? 'Visible' : 'Oculta' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="author-info">
+                    <small class="text-muted">{{ location.authorName }}</small>
+                  </div>
+                </td>
+                <td>
+                  <small>{{ formatDate(location.createdAt) }}</small>
+                  <small class="d-block text-muted" *ngIf="location.updatedAt !== location.createdAt">
+                    Editado: {{ formatDate(location.updatedAt) }}
+                  </small>
+                </td>
+                <td>
+                  <div class="btn-group" role="group">
+                    <button 
+                      class="btn btn-sm btn-outline-info"
+                      (click)="openGoogleMaps(location.googleMapsUrl)"
+                      *ngIf="location.googleMapsUrl"
+                      title="Ver en Google Maps">
+                      <i class="fas fa-external-link-alt"></i>
+                    </button>
+                    <button 
+                      class="btn btn-sm btn-outline-belgrano-celeste"
+                      (click)="openEditModal(location)"
+                      title="Editar ubicación">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button 
+                      class="btn btn-sm"
+                      [ngClass]="location.state ? 'btn-outline-warning' : 'btn-outline-success'"
+                      (click)="toggleLocationState(location)"
+                      [title]="location.state ? 'Ocultar ubicación' : 'Mostrar ubicación'">
+                      <i class="fas" [ngClass]="location.state ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </button>
+                    <button 
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="deleteLocation(location)"
+                      title="Eliminar ubicación">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="filteredLocations.length === 0">
+                <td colspan="6" class="text-center py-4">
+                  <i class="fas fa-map-marked-alt text-muted fa-3x mb-3"></i>
+                  <p class="text-muted">No se encontraron ubicaciones</p>
+                  <p class="text-muted" *ngIf="searchTerm || stateFilter !== 'all'">
+                    Prueba ajustando los filtros de búsqueda
+                  </p>
+                  <button 
+                    *ngIf="!searchTerm && stateFilter === 'all'" 
+                    class="btn btn-belgrano-celeste"
+                    (click)="openCreateModal()">
+                    <i class="fas fa-plus me-1"></i>Crear Primera Ubicación
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear/editar ubicación -->
+<div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas" [ngClass]="isEditMode ? 'fa-edit' : 'fa-plus'" class="me-2"></i>
+          {{ isEditMode ? 'Editar Ubicación' : 'Nueva Ubicación' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeModalWithConfirmation()"></button>
+      </div>
+      <div class="modal-body">
+        <form #locationFormElement="ngForm" (ngSubmit)="saveLocation()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="locationName" class="form-label">
+                  <i class="fas fa-tag me-1"></i>
+                  Nombre del Lugar <span class="text-danger">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="locationName"
+                  class="form-control"
+                  [(ngModel)]="locationForm.name"
+                  name="locationName"
+                  placeholder="Ej: Estadio Julio César Villagra"
+                  required
+                  maxlength="200">
+                <div class="form-text">Nombre descriptivo del lugar (máximo 200 caracteres)</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="locationAddress" class="form-label">
+                  <i class="fas fa-map-marker-alt me-1"></i>
+                  Dirección <span class="text-danger">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="locationAddress"
+                  class="form-control"
+                  [(ngModel)]="locationForm.address"
+                  name="locationAddress"
+                  placeholder="Ej: Av. Arturo Orgaz 500, Córdoba"
+                  required
+                  maxlength="500">
+                <div class="form-text">Dirección completa del lugar</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="locationDescription" class="form-label">
+              <i class="fas fa-info-circle me-1"></i>
+              Descripción
+            </label>
+            <textarea 
+              id="locationDescription"
+              class="form-control"
+              rows="3"
+              [(ngModel)]="locationForm.description"
+              name="locationDescription"
+              placeholder="Descripción detallada del lugar (opcional)"
+              maxlength="1000"></textarea>
+            <div class="form-text">Información adicional sobre el lugar (máximo 1000 caracteres)</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="locationGoogleMaps" class="form-label">
+              <i class="fas fa-external-link-alt me-1"></i>
+              URL de Google Maps
+            </label>
+            <input 
+              type="url" 
+              id="locationGoogleMaps"
+              class="form-control"
+              [(ngModel)]="locationForm.googleMapsUrl"
+              name="locationGoogleMaps"
+              placeholder="https://maps.google.com/..."
+              maxlength="1000">
+            <div class="form-text">
+              Enlace directo de Google Maps para esta ubicación (opcional)
+              <br>
+              <small class="text-muted">
+                <i class="fas fa-lightbulb me-1"></i>
+                Tip: Ve a Google Maps, busca el lugar y copia el enlace de compartir
+              </small>
+            </div>
+          </div>
+
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Información:</strong> Las ubicaciones creadas serán visibles en el mapa público del sitio web.
+            Puedes ocultar una ubicación en cualquier momento desde la lista de ubicaciones.
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModalWithConfirmation()">
+          <i class="fas fa-times me-1"></i>Cancelar
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-belgrano-celeste" 
+          (click)="saveLocation()"
+          [disabled]="!isFormValid()">
+          <i class="fas fa-save me-1"></i>
+          {{ isEditMode ? 'Actualizar' : 'Crear' }} Ubicación
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop del modal -->
+<div class="modal-backdrop fade" [class.show]="showModal" *ngIf="showModal"></div> 

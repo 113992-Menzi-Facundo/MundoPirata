@@ -1,0 +1,11 @@
+# Ignore all backup files - add your actual backup files here
+*.sql
+*.sql.gz
+*.dump
+*.bak
+
+# But keep the README and helper scripts
+!README.md
+!import-backup.sh
+!.gitignore
+

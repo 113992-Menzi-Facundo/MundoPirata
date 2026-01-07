@@ -1,0 +1,68 @@
+<div class="main-content">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card border-belgrano-celeste">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Iniciar Sesión</h2>
+            <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  required
+                  [(ngModel)]="email"
+                  name="email"
+                  #emailInput="ngModel"
+                  [disabled]="isLoading"
+                >
+                <span *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger" style="font-size: 0.9em;">
+                  <ng-container *ngIf="emailInput.errors?.['required']">El email es obligatorio.</ng-container>
+                  <ng-container *ngIf="emailInput.errors?.['email']">Ingresa un email válido.</ng-container>
+                </span>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-group">
+                  <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    class="form-control" 
+                    id="password" 
+                    required 
+                    [(ngModel)]="password" 
+                    name="password" 
+                    #passwordInput="ngModel" 
+                    minlength="5"
+                    [disabled]="isLoading"
+                  >
+                  <button type="button" class="btn btn-eye" (click)="togglePassword()" tabindex="-1" [disabled]="isLoading">
+                    <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                  </button>
+                </div>
+                <span *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger" style="font-size: 0.9em;">
+                  <ng-container *ngIf="passwordInput.errors?.['required']">La contraseña es obligatoria.</ng-container>
+                  <ng-container *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 5 caracteres.</ng-container>
+                </span>
+              </div>
+              <div class="d-grid">
+                <button 
+                  type="submit" 
+                  class="btn bg-belgrano-celeste text-white"
+                  [disabled]="isLoading || loginForm.invalid"
+                >
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{ isLoading ? 'Iniciando sesión...' : 'Ingresar' }}
+                </button>
+              </div>
+              <div class="text-center mt-3">
+                <p>¿No tienes cuenta? <a routerLink="/auth/register" class="text-belgrano-celeste">Regístrate</a></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

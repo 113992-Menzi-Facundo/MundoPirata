@@ -1,0 +1,37 @@
+.card {
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+.btn {
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.profile-image-container {
+  position: relative;
+  display: inline-block;
+}
+.btn-outline-belgrano-celeste {
+  color: var(--belgrano-celeste);
+  border-color: var(--belgrano-celeste);
+}
+.btn-outline-belgrano-celeste:hover {
+  background-color: var(--belgrano-celeste);
+  color: white;
+}
+.profile-card {
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 2rem 1.5rem;
+}
+.profile-card img {
+  display: block;
+  margin: 0 auto 10px auto;
+}
+.titulo-seccion {
+  color: var(--belgrano-negro);
+  transition: color 0.3s;
+  font-weight: bold;
+}
+ 

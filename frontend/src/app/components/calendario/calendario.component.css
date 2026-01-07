@@ -1,0 +1,38 @@
+/* Layout responsive para móviles y tablets */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem 0;
+  }
+  
+  .titulo-seccion {
+    font-size: 2rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .event-modal .modal-dialog {
+    margin: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+  
+  .event-modal .modal-body {
+    padding: 1rem;
+  }
+  
+  .event-details {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .event-info {
+    margin-bottom: 1rem;
+  }
+  
+  .event-sidebar {
+    margin-left: 0;
+    border-left: none;
+    border-top: 1px solid #e5e7eb;
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+} 

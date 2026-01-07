@@ -1,0 +1,70 @@
+<div class="main-content">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card border-belgrano-celeste">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Registro</h2>
+            <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+              <div class="mb-3">
+                <label for="firstName" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="firstName" required [(ngModel)]="firstName" name="firstName" #firstNameInput="ngModel" minlength="2" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$" [disabled]="isLoading">
+                <span *ngIf="firstNameInput.invalid && (firstNameInput.dirty || firstNameInput.touched)" class="text-danger" style="font-size: 0.9em;">
+                  <ng-container *ngIf="firstNameInput.errors?.['required']">El nombre es obligatorio.</ng-container>
+                  <ng-container *ngIf="firstNameInput.errors?.['minlength']">El nombre debe tener al menos 2 caracteres.</ng-container>
+                  <ng-container *ngIf="firstNameInput.errors?.['pattern']">El nombre solo puede contener letras.</ng-container>
+                </span>
+              </div>
+              <div class="mb-3">
+                <label for="lastName" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="lastName" required [(ngModel)]="lastName" name="lastName" #lastNameInput="ngModel" minlength="2" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$" [disabled]="isLoading">
+                <span *ngIf="lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched)" class="text-danger" style="font-size: 0.9em;">
+                  <ng-container *ngIf="lastNameInput.errors?.['required']">El apellido es obligatorio.</ng-container>
+                  <ng-container *ngIf="lastNameInput.errors?.['minlength']">El apellido debe tener al menos 2 caracteres.</ng-container>
+                  <ng-container *ngIf="lastNameInput.errors?.['pattern']">El apellido solo puede contener letras.</ng-container>
+                </span>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required [(ngModel)]="email" name="email" #emailInput="ngModel" email [disabled]="isLoading">
+                <span *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger" style="font-size: 0.9em;">
+                  <ng-container *ngIf="emailInput.errors?.['required']">El email es obligatorio.</ng-container>
+                  <ng-container *ngIf="emailInput.errors?.['email']">El email no es válido.</ng-container>
+                </span>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" required [(ngModel)]="password" name="password" #passwordInput="ngModel" minlength="5" [disabled]="isLoading">
+                <span *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger" style="font-size: 0.9em;">
+                  <ng-container *ngIf="passwordInput.errors?.['required']">La contraseña es obligatoria.</ng-container>
+                  <ng-container *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 5 caracteres.</ng-container>
+                </span>
+              </div>
+              <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                <input type="password" class="form-control" id="confirmPassword" required [(ngModel)]="confirmPassword" name="confirmPassword" #confirmPasswordInput="ngModel" minlength="5" [disabled]="isLoading">
+                <span *ngIf="confirmPasswordInput.invalid && (confirmPasswordInput.dirty || confirmPasswordInput.touched)" class="text-danger" style="font-size: 0.9em;">
+                  <ng-container *ngIf="confirmPasswordInput.errors?.['required']">La confirmación es obligatoria.</ng-container>
+                  <ng-container *ngIf="confirmPasswordInput.errors?.['minlength']">La confirmación debe tener al menos 5 caracteres.</ng-container>
+                </span>
+                <span *ngIf="password !== confirmPassword && confirmPasswordInput.dirty && !confirmPasswordInput.errors?.['required']" class="text-danger" style="font-size: 0.9em;">
+                  Las contraseñas no coinciden.
+                </span>
+              </div>
+              
+              <div class="d-grid">
+                <button type="submit" class="btn bg-belgrano-celeste text-white" [disabled]="isLoading || registerForm.invalid">
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{ isLoading ? 'Registrando...' : 'Registrarse' }}
+                </button>
+              </div>
+              <div class="text-center mt-3">
+                <p>¿Ya tienes cuenta? <a routerLink="/auth/login" class="text-belgrano-celeste">Iniciar Sesión</a></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

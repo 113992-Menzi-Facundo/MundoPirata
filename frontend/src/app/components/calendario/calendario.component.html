@@ -1,0 +1,248 @@
+<div class="main-content">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="titulo-seccion mb-0">Calendario de Eventos</h2>
+          <button class="btn btn-outline-primary" (click)="refreshCalendar()" [disabled]="isLoading">
+            <i class="fas fa-sync-alt me-2" [class.fa-spin]="isLoading"></i>
+            Actualizar
+          </button>
+        </div>
+        
+        <!-- Loading state -->
+        <div *ngIf="isLoading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando calendario...</span>
+          </div>
+          <p class="mt-3 text-muted">Cargando eventos del calendario...</p>
+        </div>
+        
+        <div class="card border-belgrano-celeste" *ngIf="!isLoading">
+          <div class="card-body">
+            <!-- Calendario -->
+            <div class="calendar-container">
+              <full-calendar *ngIf="isBrowser" #calendar [options]="calendarOptions"></full-calendar>
+            </div>
+
+            <!-- Leyenda -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header bg-belgrano-celeste text-white">
+                    <h5 class="mb-0">
+                      <i class="fas fa-info-circle me-2"></i>
+                      Leyenda de Eventos
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-4 col-lg-2">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="color-box" style="background-color: #dc3545;"></div>
+                          <span class="ms-2">
+                            <i class="fas fa-futbol me-1"></i>
+                            <small>Partidos</small>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-4 col-lg-2">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="color-box" style="background-color: #28a745;"></div>
+                          <span class="ms-2">
+                            <i class="fas fa-running me-1"></i>
+                            <small>Entrenamientos</small>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-4 col-lg-2">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="color-box" style="background-color: #17a2b8;"></div>
+                          <span class="ms-2">
+                            <i class="fas fa-users me-1"></i>
+                            <small>Eventos Sociales</small>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-4 col-lg-2">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="color-box" style="background-color: #ffc107;"></div>
+                          <span class="ms-2">
+                            <i class="fas fa-microphone me-1"></i>
+                            <small>Conferencias</small>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-4 col-lg-2">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="color-box" style="background-color: #6f42c1;"></div>
+                          <span class="ms-2">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            <small>Institucionales</small>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-4 col-lg-2">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="color-box" style="background-color: #0066cc;"></div>
+                          <span class="ms-2">
+                            <i class="fas fa-calendar me-1"></i>
+                            <small>Otros</small>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-12">
+                        <small class="text-muted">
+                          <i class="fas fa-mouse-pointer me-1"></i>
+                          Haz clic en cualquier evento para ver más detalles
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Detalles del Evento -->
+<div class="modal fade" [class.show]="showEventModal" [style.display]="showEventModal ? 'block' : 'none'" tabindex="-1" (keydown)="onKeyDown($event)">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header text-white" [style.background-color]="selectedEvent?.extendedProps?.eventType ? obtenerColorEvento(selectedEvent.extendedProps.eventType) : '#0066cc'">
+        <h5 class="modal-title">
+          <i [class]="selectedEvent?.extendedProps?.eventType ? obtenerIconoEvento(selectedEvent?.extendedProps?.eventType) : 'fas fa-calendar'" class="me-2"></i>
+          {{ selectedEvent?.title }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="cerrarModal()"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedEvent">
+        <div class="row">
+          <!-- Información básica -->
+          <div class="col-md-8">
+            <div class="mb-3">
+              <h6 class="text-primary">
+                <i class="fas fa-calendar-day me-2"></i>Fecha y Hora
+              </h6>
+              <p class="mb-1">
+                <strong>Fecha:</strong> 
+                <span *ngIf="selectedEventData; else fallbackDate">
+                  {{ formatearFecha(selectedEventData!.date) }}
+                </span>
+                <ng-template #fallbackDate>
+                  {{ selectedEvent.start?.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }}
+                </ng-template>
+              </p>
+              <p class="mb-0" *ngIf="selectedEvent.start">
+                <strong>Hora:</strong> 
+                {{ selectedEvent.start?.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) }}
+                <span *ngIf="selectedEvent.end">
+                  - {{ selectedEvent.end?.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) }}
+                </span>
+              </p>
+            </div>
+
+            <div class="mb-3" *ngIf="selectedEvent.extendedProps?.eventType">
+              <h6 class="text-primary">
+                <i class="fas fa-tag me-2"></i>Tipo de Evento
+              </h6>
+              <span class="badge fs-6" [style.background-color]="obtenerColorEvento(selectedEvent.extendedProps.eventType)">
+                <i [class]="obtenerIconoEvento(selectedEvent.extendedProps.eventType)" class="me-1"></i>
+                {{ selectedEvent.extendedProps.eventType }}
+              </span>
+            </div>
+
+            <div class="mb-3" *ngIf="selectedEvent.extendedProps?.detail || selectedEventData?.detail">
+              <h6 class="text-primary">
+                <i class="fas fa-info-circle me-2"></i>Detalles
+              </h6>
+              <p class="mb-0">
+                {{ selectedEventData?.detail || selectedEvent.extendedProps?.detail }}
+              </p>
+            </div>
+
+            <div class="mb-3" *ngIf="selectedEvent.extendedProps?.authorName || selectedEventData?.authorName">
+              <h6 class="text-primary">
+                <i class="fas fa-user me-2"></i>Organizador
+              </h6>
+              <p class="mb-0">
+                {{ selectedEventData?.authorName || selectedEvent.extendedProps?.authorName }}
+              </p>
+            </div>
+
+            <div class="mb-3" *ngIf="selectedEvent.extendedProps?.lugar">
+              <h6 class="text-primary">
+                <i class="fas fa-map-marker-alt me-2"></i>Lugar
+              </h6>
+              <p class="mb-0">
+                {{ selectedEvent.extendedProps.lugar }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Panel lateral -->
+          <div class="col-md-4">
+            <div class="card bg-light h-100">
+              <div class="card-body">
+                <h6 class="card-title text-center">
+                  <i class="fas fa-calendar-check me-2"></i>
+                  Información del Evento
+                </h6>
+                
+                <div class="text-center mb-3">
+                  <i [class]="selectedEvent?.extendedProps?.eventType ? obtenerIconoEvento(selectedEvent.extendedProps.eventType) : 'fas fa-calendar'" 
+                     class="fa-3x"
+                     [style.color]="selectedEvent?.extendedProps?.eventType ? obtenerColorEvento(selectedEvent.extendedProps.eventType) : '#0066cc'"></i>
+                </div>
+
+                <div class="mb-2" *ngIf="selectedEventData">
+                  <small class="text-muted">ID del Evento:</small><br>
+                  <code>#{{ selectedEventData!.id }}</code>
+                </div>
+
+                <div class="mb-2" *ngIf="selectedEventData?.createdAt">
+                  <small class="text-muted">Creado:</small><br>
+                  <small>{{ selectedEventData?.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
+                </div>
+
+                <div class="mb-2" *ngIf="selectedEventData?.updatedAt && selectedEventData?.updatedAt !== selectedEventData?.createdAt">
+                  <small class="text-muted">Última actualización:</small><br>
+                  <small>{{ selectedEventData?.updatedAt | date:'dd/MM/yyyy HH:mm' }}</small>
+                </div>
+
+                <!-- Alerta para partidos -->
+                <div *ngIf="selectedEvent?.extendedProps?.eventType && isPartido(selectedEvent.extendedProps.eventType)" class="alert alert-info mt-3">
+                  <i class="fas fa-ticket-alt me-2"></i>
+                  <strong>¡Entradas disponibles!</strong>
+                  <small class="d-block mt-1">Haz clic en "Comprar Entradas" para ver los sectores disponibles.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+          <i class="fas fa-times me-2"></i>Cerrar
+        </button>
+        <button 
+          *ngIf="selectedEvent?.extendedProps?.eventType && isPartido(selectedEvent.extendedProps.eventType)" 
+          type="button" 
+          class="btn btn-belgrano-celeste"
+          routerLink="/entradas"
+          (click)="cerrarModal()">
+          <i class="fas fa-ticket-alt me-2"></i>Comprar Entradas
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay del Modal -->
+<div class="modal-backdrop fade show" *ngIf="showEventModal" (click)="cerrarModal()"></div> 

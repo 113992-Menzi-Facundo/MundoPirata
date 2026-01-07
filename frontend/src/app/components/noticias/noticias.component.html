@@ -1,0 +1,218 @@
+<div class="main-content">
+  <div class="container mt-5 pt-4">
+    <!-- Header Section -->
+    <div class="header-section mb-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h1 class="page-title">
+            <i class="fas fa-newspaper me-3"></i>
+            Noticias del Club
+          </h1>
+          <p class="page-subtitle">Mantente informado sobre todo lo que acontece en el Club Atlético Belgrano</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="search-section mb-4">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Buscar noticias por título o contenido..."
+                [(ngModel)]="searchTerm"
+                (input)="onSearch()">
+              <button 
+                *ngIf="searchTerm" 
+                class="clear-search-btn" 
+                (click)="clearSearch()"
+                title="Limpiar búsqueda">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select 
+            class="form-select category-select" 
+            [(ngModel)]="selectedCategory"
+            (change)="onCategoryChange()">
+            <option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <button 
+            class="btn btn-outline-primary refresh-btn" 
+            (click)="refreshNews()"
+            [disabled]="isLoading"
+            title="Actualizar noticias">
+            <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i>
+            Actualizar
+          </button>
+        </div>
+      </div>
+      
+      <!-- Results Counter -->
+      <div *ngIf="getNewsStats().hasFilter" class="search-results mt-2">
+        <small class="text-muted">
+          <i class="fas fa-info-circle me-1"></i>
+          Mostrando {{ getNewsStats().filtered }} de {{ getNewsStats().total }} noticias
+        </small>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      {{ error }}
+      <button class="btn btn-sm btn-outline-warning ms-auto" (click)="loadNews()">
+        <i class="fas fa-redo me-1"></i>Reintentar
+      </button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+        <p class="loading-text">Cargando noticias...</p>
+      </div>
+    </div>
+
+    <!-- News Cards Grid -->
+    <div *ngIf="!isLoading" class="news-grid">
+      <!-- No results message -->
+      <div *ngIf="filteredNews.length === 0" class="no-results-container">
+        <div class="no-results-content">
+          <i class="fas fa-newspaper no-results-icon"></i>
+          <h3>No se encontraron noticias</h3>
+          <p class="text-muted" *ngIf="searchTerm">
+            Prueba ajustando tu búsqueda: "{{ searchTerm }}"
+          </p>
+          <p class="text-muted" *ngIf="!searchTerm">
+            No hay noticias disponibles en este momento
+          </p>
+          <button 
+            *ngIf="searchTerm" 
+            class="btn btn-outline-primary"
+            (click)="clearSearch()">
+            <i class="fas fa-times me-2"></i>
+            Limpiar búsqueda
+          </button>
+        </div>
+      </div>
+
+      <!-- News Cards -->
+      <div class="row" *ngIf="filteredNews.length > 0">
+        <div 
+          *ngFor="let newsItem of filteredNews; trackBy: trackByNewsId" 
+          class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
+          
+          <div class="news-card" (click)="viewNewsDetail(newsItem)">
+            <!-- Card Image -->
+            <div class="card-image">
+              <img [src]="getNewsImage(newsItem)" 
+                   [alt]="newsItem.title" 
+                   class="card-img">
+              <div class="image-overlay">
+                <span class="news-badge" [class]="getNewsBadgeClass(newsItem.typeDescription)">
+                  <i [class]="getNewsIcon(newsItem.typeDescription)"></i>
+                  {{ newsItem.typeDescription }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="card-content">
+              <!-- Card Header -->
+              <div class="card-header">
+                <h4 class="card-title">{{ newsItem.title }}</h4>
+                <div class="card-actions">
+                  <button 
+                    class="btn btn-primary btn-sm"
+                    (click)="viewNewsDetail(newsItem); $event.stopPropagation()"
+                    title="Leer noticia completa">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card Body -->
+              <div class="card-body">
+                <div class="news-info">
+                  <div class="info-item">
+                    <i class="fas fa-align-left info-icon"></i>
+                    <span class="info-text">{{ truncateContent(newsItem.content, 80) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card Footer -->
+              <div class="card-footer">
+                <div class="news-meta">
+                  <div class="meta-item">
+                    <i class="fas fa-user meta-icon"></i>
+                    <span class="meta-text">{{ newsItem.authorName }}</span>
+                  </div>
+                </div>
+                
+                <button 
+                  class="btn btn-belgrano read-more-button"
+                  (click)="viewNewsDetail(newsItem); $event.stopPropagation()">
+                  <i class="fas fa-book-open me-2"></i>
+                  Leer más
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Section -->
+    <div class="help-section mt-4" *ngIf="!isLoading">
+      <div class="row">
+        <div class="col-12">
+          <div class="help-card">
+            <div class="help-header">
+              <h5>
+                <i class="fas fa-question-circle me-2"></i>
+                ¿Cómo mantenerte informado?
+              </h5>
+            </div>
+            <div class="help-content">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="help-item">
+                    <i class="fas fa-search help-icon"></i>
+                    <h6>Buscar</h6>
+                    <p>Utiliza el buscador para encontrar noticias específicas por título o contenido</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="help-item">
+                    <i class="fas fa-filter help-icon"></i>
+                    <h6>Filtrar</h6>
+                    <p>Selecciona una categoría para ver solo las noticias que te interesan</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="help-item">
+                    <i class="fas fa-book-open help-icon"></i>
+                    <h6>Leer</h6>
+                    <p>Haz clic en cualquier noticia para leer el contenido completo</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

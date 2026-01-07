@@ -1,0 +1,338 @@
+<div class="main-content">
+  <div class="container-fluid mt-5">
+    <div class="row">
+      <!-- Sidebar de navegación -->
+      <div class="col-md-3 col-lg-2">
+        <div class="card border-belgrano-celeste">
+          <div class="card-header bg-belgrano-celeste text-white">
+            <h5 class="mb-0">
+              <i class="fas fa-cogs me-2"></i>
+              Panel de Administración
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <nav class="nav flex-column">
+              <!-- Dashboard -->
+              <a class="nav-link" 
+                 [class]="getTabClass('dashboard')"
+                 (click)="setActiveTab('dashboard')">
+                <i class="fas fa-tachometer-alt me-2"></i>
+                Dashboard
+              </a>
+              
+              <!-- Gestión de Usuarios -->
+              <a class="nav-link" 
+                 [class]="getTabClass('usuarios')"
+                 (click)="setActiveTab('usuarios')">
+                <i class="fas fa-users me-2"></i>
+                Gestión de Usuarios
+              </a>
+              
+              <!-- Gestión de Noticias -->
+              <a class="nav-link" 
+                 [class]="getTabClass('noticias')"
+                 (click)="setActiveTab('noticias')">
+                <i class="fas fa-newspaper me-2"></i>
+                Gestión de Noticias
+              </a>
+              
+              <!-- Gestión de Calendario -->
+              <a class="nav-link" 
+                 [class]="getTabClass('calendario')"
+                 (click)="setActiveTab('calendario')">
+                <i class="fas fa-calendar-alt me-2"></i>
+                Gestión de Calendario
+              </a>
+              
+              <!-- Gestión de Entradas -->
+              <a class="nav-link" 
+                 [class]="getTabClass('entradas')"
+                 (click)="setActiveTab('entradas')">
+                <i class="fas fa-ticket-alt me-2"></i>
+                Gestión de Entradas
+              </a>
+              
+              <!-- Gestión de Donaciones -->
+              <a class="nav-link" 
+                 [class]="getTabClass('donaciones')"
+                 (click)="setActiveTab('donaciones')">
+                <i class="fas fa-hand-holding-heart me-2"></i>
+                Gestión de Donaciones
+              </a>
+              
+              <!-- Gestión de Mapa -->
+              <a class="nav-link" 
+                 [class]="getTabClass('mapa')"
+                 (click)="setActiveTab('mapa')">
+                <i class="fas fa-map-marker-alt me-2"></i>
+                Gestión de Mapa
+              </a>
+              
+
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="col-md-9 col-lg-10">
+        <div class="card border-belgrano-celeste">
+          <div class="card-header bg-belgrano-celeste text-white">
+            <h5 class="mb-0">
+              <i class="fas fa-cog me-2"></i>
+              {{ getTabTitle() }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <!-- Dashboard -->
+            <div *ngIf="activeTab === 'dashboard'" class="admin-dashboard">
+              <!-- KPIs Principales -->
+              <div class="row g-4 mb-4">
+                <div class="col-md-6 col-lg-3">
+                  <div class="card bg-primary text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h4 class="mb-0">{{ stats.totalUsers || 0 }}</h4>
+                          <p class="mb-0">Usuarios Registrados</p>
+                        </div>
+                        <div class="align-self-center">
+                          <i class="fas fa-users fa-2x"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                  <div class="card bg-success text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h4 class="mb-0">{{ stats.totalNews || 0 }}</h4>
+                          <p class="mb-0">Noticias Publicadas</p>
+                        </div>
+                        <div class="align-self-center">
+                          <i class="fas fa-newspaper fa-2x"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                  <div class="card bg-warning text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h4 class="mb-0">{{ stats.totalEvents || 0 }}</h4>
+                          <p class="mb-0">Eventos del Mes</p>
+                        </div>
+                        <div class="align-self-center">
+                          <i class="fas fa-calendar fa-2x"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                  <div class="card bg-info text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h4 class="mb-0">{{ stats.totalTickets || 0 }}</h4>
+                          <p class="mb-0">Entradas Disponibles</p>
+                        </div>
+                        <div class="align-self-center">
+                          <i class="fas fa-ticket-alt fa-2x"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- KPIs Secundarios -->
+              <div class="row g-4 mb-4">
+                <div class="col-md-6 col-lg-3">
+                  <div class="card bg-belgrano-celeste text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h4 class="mb-0">${{ (stats.totalDonations || 0) | number:'1.0-0' }}</h4>
+                          <p class="mb-0">Total Donaciones</p>
+                        </div>
+                        <div class="align-self-center">
+                          <i class="fas fa-hand-holding-heart fa-2x"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                  <div class="card bg-secondary text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h4 class="mb-0">{{ stats.totalLocations || 0 }}</h4>
+                          <p class="mb-0">Ubicaciones Mapa</p>
+                        </div>
+                        <div class="align-self-center">
+                          <i class="fas fa-map-marker-alt fa-2x"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                  <div class="card bg-dark text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h4 class="mb-0">{{ stats.pendingDonations || 0 }}</h4>
+                          <p class="mb-0">Donaciones Pendientes</p>
+                        </div>
+                        <div class="align-self-center">
+                          <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                  <div class="card bg-belgrano-azul text-white">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h4 class="mb-0">{{ stats.ticketsSold || 0 }}</h4>
+                          <p class="mb-0">Entradas Vendidas</p>
+                        </div>
+                        <div class="align-self-center">
+                          <i class="fas fa-shopping-cart fa-2x"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Acciones Rápidas Mejoradas -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="card border-belgrano-celeste">
+                    <div class="card-header bg-belgrano-celeste text-white">
+                      <h6 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i>Acciones Rápidas
+                      </h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="row g-3">
+                        <!-- Gestión de Contenido -->
+                        <div class="col-lg-6">
+                          <h6 class="text-muted mb-3">
+                            <i class="fas fa-edit me-2"></i>Gestión de Contenido
+                          </h6>
+                          <div class="row g-2">
+                            <div class="col-6">
+                              <button class="btn btn-outline-primary w-100 p-3" (click)="setActiveTab('noticias')">
+                                <i class="fas fa-plus-circle me-2"></i>
+                                <br><small>Nueva Noticia</small>
+                              </button>
+                            </div>
+                            <div class="col-6">
+                              <button class="btn btn-outline-success w-100 p-3" (click)="setActiveTab('calendario')">
+                                <i class="fas fa-calendar-plus me-2"></i>
+                                <br><small>Nuevo Evento</small>
+                              </button>
+                            </div>
+                            <div class="col-6">
+                              <button class="btn btn-outline-info w-100 p-3" (click)="setActiveTab('mapa')">
+                                <i class="fas fa-map-pin me-2"></i>
+                                <br><small>Nueva Ubicación</small>
+                              </button>
+                            </div>
+                            <div class="col-6">
+                              <button class="btn btn-outline-warning w-100 p-3" (click)="setActiveTab('entradas')">
+                                <i class="fas fa-ticket-alt me-2"></i>
+                                <br><small>Gestionar Entradas</small>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Administración -->
+                        <div class="col-lg-6">
+                          <h6 class="text-muted mb-3">
+                            <i class="fas fa-cogs me-2"></i>Administración
+                          </h6>
+                          <div class="row g-2">
+                            <div class="col-6">
+                              <button class="btn btn-outline-secondary w-100 p-3" (click)="setActiveTab('usuarios')">
+                                <i class="fas fa-users-cog me-2"></i>
+                                <br><small>Gestionar Usuarios</small>
+                              </button>
+                            </div>
+                            <div class="col-6">
+                              <button class="btn btn-outline-danger w-100 p-3" (click)="setActiveTab('donaciones')">
+                                <i class="fas fa-hand-holding-heart me-2"></i>
+                                <br><small>Revisar Donaciones</small>
+                              </button>
+                            </div>
+                            <div class="col-12">
+                              <button class="btn btn-outline-dark w-100 p-3" (click)="refreshStats()">
+                                <i class="fas fa-sync-alt me-2"></i>
+                                <br><small>Actualizar Datos</small>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+            <!-- Gestión de Usuarios -->
+            <div *ngIf="activeTab === 'usuarios'" class="admin-section">
+              <app-user-management></app-user-management>
+            </div>
+
+            <!-- Gestión de Noticias -->
+            <div *ngIf="activeTab === 'noticias'" class="admin-section">
+              <app-news-management></app-news-management>
+            </div>
+
+            <!-- Gestión de Calendario -->
+            <div *ngIf="activeTab === 'calendario'" class="admin-section">
+              <app-calendar-management></app-calendar-management>
+            </div>
+
+            <!-- Gestión de Entradas -->
+            <div *ngIf="activeTab === 'entradas'" class="admin-section">
+              <app-ticket-management></app-ticket-management>
+            </div>
+
+            <!-- Gestión de Donaciones -->
+            <div *ngIf="activeTab === 'donaciones'" class="admin-section">
+              <app-donation-management></app-donation-management>
+            </div>
+
+            <!-- Gestión de Mapa -->
+            <div *ngIf="activeTab === 'mapa'" class="admin-section">
+              <app-map-management></app-map-management>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

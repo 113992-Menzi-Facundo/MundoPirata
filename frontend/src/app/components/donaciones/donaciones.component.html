@@ -1,0 +1,289 @@
+<!-- Sección de Donaciones -->
+<div class="donaciones-container">
+  <div class="container">
+    <div class="donaciones-content">
+      
+      <!-- Header con padding para el navbar -->
+      <div class="donaciones-header">
+        <div class="text-center mb-4">
+          <h1 class="display-4 fw-bold text-belgrano-celeste">
+            <i class="fas fa-heart me-3"></i>
+            Donaciones
+          </h1>
+          <p class="lead text-muted">Apoyá al Club Atlético Belgrano y ayudanos a seguir creciendo juntos</p>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-belgrano-celeste" style="width: 3rem; height: 3rem;"></div>
+        <p class="mt-3 text-muted">Cargando destinos de donación...</p>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error && !isLoading" class="alert alert-warning text-center">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-warning ms-3" (click)="refresh()">
+          <i class="fas fa-sync-alt me-1"></i>
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Vista principal de donaciones -->
+      <div *ngIf="!isLoading" class="donations-grid">
+        <div class="row">
+          <!-- Formulario de donación -->
+          <div class="col-xl-8 col-lg-7 mb-4">
+            <div class="card donation-form-card h-100">
+              
+              <!-- Header de la card -->
+              <div class="card-header">
+                <h4 class="mb-0">
+                  <i class="fas fa-hand-holding-heart me-2"></i>
+                  Realizar Donación
+                </h4>
+              </div>
+              
+              <div class="card-body">
+                <form (ngSubmit)="onSubmit()" #donationForm="ngForm">
+                  
+                  <!-- Destino de donación -->
+                  <div class="mb-4">
+                    <label class="form-label fw-bold">
+                      <i class="fas fa-map-marker-alt me-2"></i>
+                      Destino de la donación
+                    </label>
+                    <select 
+                      class="form-select form-select-lg"
+                      [(ngModel)]="selectedDestinationId"
+                      name="destination"
+                      required>
+                      <option value="" disabled>Seleccioná el destino de tu donación</option>
+                      <option 
+                        *ngFor="let destination of destinations" 
+                        [value]="destination.id">
+                        {{ destination.name }}
+                      </option>
+                    </select>
+                  </div>
+                  
+                  <!-- Información del destino seleccionado -->
+                  <div *ngIf="getSelectedDestination()" class="destination-info mb-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h6 class="text-belgrano-celeste mb-2">
+                          <i class="fas fa-info-circle me-2"></i>
+                          {{ getSelectedDestination()?.name }}
+                        </h6>
+                        <p class="text-muted mb-1">
+                          <i class="fas fa-map-marker-alt me-2"></i>
+                          {{ getSelectedDestination()?.address }}
+                        </p>
+                        <p class="text-muted mb-0" *ngIf="getSelectedDestination()?.phoneNumber">
+                          <i class="fas fa-phone me-2"></i>
+                          {{ getSelectedDestination()?.phoneNumber }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Montos sugeridos detallados -->
+                  <div class="mb-4">
+                    <label class="form-label fw-bold">
+                      <i class="fas fa-dollar-sign me-2"></i>
+                      Montos sugeridos
+                    </label>
+                    <div class="row g-2 mb-3">
+                      <div 
+                        *ngFor="let suggestedAmount of suggestedAmounts" 
+                        class="col-6 col-md-4 col-lg-3">
+                        <button 
+                          type="button"
+                          class="btn w-100"
+                          [class]="amount === suggestedAmount ? 'btn-belgrano-celeste' : 'btn-outline-belgrano-celeste'"
+                          (click)="selectSuggestedAmount(suggestedAmount)">
+                          {{ formatPrice(suggestedAmount) }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Monto personalizado -->
+                  <div class="mb-4">
+                    <label class="form-label fw-bold">Monto personalizado</label>
+                    <div class="input-group input-group-lg">
+                      <span class="input-group-text">
+                        <i class="fas fa-dollar-sign"></i>
+                      </span>
+                      <input 
+                        type="number" 
+                        class="form-control" 
+                        placeholder="Ingresá tu monto"
+                        [(ngModel)]="amount"
+                        name="amount"
+                        min="100"
+                        max="1000000"
+                        required>
+                    </div>
+                    <div class="form-text">
+                      Monto mínimo: $100 - Monto máximo: $1.000.000
+                    </div>
+                  </div>
+
+                  <!-- Método de pago -->
+                  <div class="mb-4">
+                    <label class="form-label fw-bold">
+                      <i class="fas fa-credit-card me-2"></i>
+                      Método de pago
+                    </label>
+                    <div class="row g-3">
+                      <div 
+                        *ngFor="let method of paymentMethods" 
+                        class="col-md-6">
+                        <div class="form-check payment-method-card">
+                          <input 
+                            class="form-check-input" 
+                            type="radio" 
+                            [id]="method.value"
+                            [(ngModel)]="paymentMethod"
+                            [value]="method.value"
+                            name="paymentMethod">
+                          <label class="form-check-label" [for]="method.value">
+                            <div class="d-flex align-items-center">
+                              <i [class]="method.icon" class="me-2"></i>
+                              {{ method.label }}
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Botón de donación -->
+                  <div class="d-grid">
+                    <button 
+                      type="submit" 
+                      class="btn btn-belgrano-celeste btn-lg"
+                      [disabled]="isSubmitting || !isAuthenticated()">
+                      <span *ngIf="!isSubmitting">
+                        <i class="fas fa-heart me-2"></i>
+                        Realizar Donación
+                      </span>
+                      <span *ngIf="isSubmitting">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Procesando...
+                      </span>
+                    </button>
+                  </div>
+
+                  <!-- Mensaje de autenticación -->
+                  <div *ngIf="!isAuthenticated()" class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Debes <a routerLink="/login" class="alert-link">iniciar sesión</a> para realizar una donación
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Información adicional -->
+          <div class="col-xl-4 col-lg-5 mb-4">
+            <div class="row">
+              <!-- Card de información -->
+              <div class="col-12 mb-4">
+                <div class="card h-100">
+                  <div class="card-header">
+                    <h5 class="mb-0">
+                      <i class="fas fa-info-circle me-2"></i>
+                      ¿Por qué donar?
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="donation-benefits">
+                      <div class="benefit-item mb-3">
+                        <div class="d-flex align-items-start">
+                          <i class="fas fa-star text-warning me-3 mt-1"></i>
+                          <div>
+                            <h6 class="mb-1">Apoyo al Club</h6>
+                            <p class="text-muted mb-0 small">Contribuí al crecimiento y desarrollo del Club Atlético Belgrano</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="benefit-item mb-3">
+                        <div class="d-flex align-items-start">
+                          <i class="fas fa-trophy text-success me-3 mt-1"></i>
+                          <div>
+                            <h6 class="mb-1">Mejoras en Infraestructura</h6>
+                            <p class="text-muted mb-0 small">Ayudá a mejorar las instalaciones del estadio y el club</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="benefit-item mb-3">
+                        <div class="d-flex align-items-start">
+                          <i class="fas fa-users text-primary me-3 mt-1"></i>
+                          <div>
+                            <h6 class="mb-1">Comunidad Pirata</h6>
+                            <p class="text-muted mb-0 small">Formá parte de la comunidad que hace grande al Pirata</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="benefit-item">
+                        <div class="d-flex align-items-start">
+                          <i class="fas fa-heart text-danger me-3 mt-1"></i>
+                          <div>
+                            <h6 class="mb-1">Pasión Pirata</h6>
+                            <p class="text-muted mb-0 small">Demostrá tu pasión y compromiso con los colores</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card de estadísticas -->
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="mb-0">
+                      <i class="fas fa-chart-bar me-2"></i>
+                      Estadísticas
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="stats-grid">
+                      <div class="stat-item text-center mb-3">
+                        <div class="stat-number text-belgrano-celeste fs-4 fw-bold">
+                          {{ destinations.length }}
+                        </div>
+                        <div class="stat-label text-muted small">Destinos Activos</div>
+                      </div>
+                      
+                      <div class="stat-item text-center mb-3">
+                        <div class="stat-number text-success fs-4 fw-bold">
+                          $100
+                        </div>
+                        <div class="stat-label text-muted small">Monto Mínimo</div>
+                      </div>
+                      
+                      <div class="stat-item text-center">
+                        <div class="stat-number text-warning fs-4 fw-bold">
+                          $1.000.000
+                        </div>
+                        <div class="stat-label text-muted small">Monto Máximo</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

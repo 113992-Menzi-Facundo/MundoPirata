@@ -1,0 +1,524 @@
+<!-- Gestión de Donaciones -->
+<div class="donation-management">
+  <!-- Header con navegación -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">
+      <i class="fas fa-heart me-2 text-belgrano-celeste"></i>
+      Gestión de Donaciones
+    </h4>
+    <div class="btn-toolbar">
+      <div class="btn-group me-2">
+        <button 
+          class="btn" 
+          [class]="activeView === 'donations' ? 'btn-belgrano-celeste' : 'btn-outline-belgrano-celeste'"
+          (click)="activeView = 'donations'">
+          <i class="fas fa-heart me-1"></i>Donaciones
+        </button>
+        <button 
+          class="btn" 
+          [class]="activeView === 'destinations' ? 'btn-belgrano-celeste' : 'btn-outline-belgrano-celeste'"
+          (click)="activeView = 'destinations'">
+          <i class="fas fa-map-marker-alt me-1"></i>Destinaciones
+        </button>
+        <button 
+          class="btn" 
+          [class]="activeView === 'stats' ? 'btn-belgrano-celeste' : 'btn-outline-belgrano-celeste'"
+          (click)="activeView = 'stats'">
+          <i class="fas fa-chart-bar me-1"></i>Estadísticas
+        </button>
+      </div>
+      <button class="btn btn-outline-secondary" (click)="refresh()" [disabled]="isLoading">
+        <i class="fas fa-sync-alt me-1" [class.fa-spin]="isLoading"></i>
+        Actualizar
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-belgrano-celeste" style="width: 3rem; height: 3rem;"></div>
+    <p class="mt-3 text-muted">Cargando datos...</p>
+  </div>
+
+  <!-- Vista de Donaciones -->
+  <div *ngIf="activeView === 'donations' && !isLoading">
+    <!-- Filtros -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">
+              <i class="fas fa-search me-1"></i>
+              Buscar
+            </label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="searchTerm"
+              placeholder="Buscar por usuario o destinación...">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">
+              <i class="fas fa-filter me-1"></i>
+              Estado
+            </label>
+            <select class="form-select" [(ngModel)]="filterStatus">
+              <option value="">Todos los estados</option>
+              <option *ngFor="let state of donationStates" [value]="state.value">
+                {{ state.label }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">
+              <i class="fas fa-map-marker-alt me-1"></i>
+              Destinación
+            </label>
+            <select class="form-select" [(ngModel)]="filterDestination">
+              <option value="">Todas las destinaciones</option>
+              <option *ngFor="let dest of destinations" [value]="dest.id">
+                {{ dest.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button 
+              type="button" 
+              class="btn btn-outline-belgrano-celeste w-100"
+              (click)="clearFilters()">
+              <i class="fas fa-times me-1"></i>Limpiar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de Donaciones -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-list me-2"></i>
+          Lista de Donaciones ({{ getFilteredDonations().length }})
+        </h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Destinación</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Método de Pago</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let donation of getFilteredDonations()">
+                <td>
+                  <span class="badge bg-light text-dark">#{{ donation.id }}</span>
+                </td>
+                <td>
+                  <div class="user-info">
+                    <strong>{{ donation.userName }}</strong>
+                    <small class="text-muted d-block">ID: {{ donation.userId }}</small>
+                  </div>
+                </td>
+                <td>
+                  <div class="destination-info">
+                    <strong>{{ donation.destinationName }}</strong>
+                    <small class="text-muted d-block" *ngIf="donation.destinationAddress">
+                      {{ donation.destinationAddress }}
+                    </small>
+                  </div>
+                </td>
+                <td>
+                  <span class="amount fw-bold text-success">{{ formatPrice(donation.amount) }}</span>
+                </td>
+                <td>
+                  <small>{{ formatDate(donation.donationDate) }}</small>
+                </td>
+                <td>
+                  <span 
+                    class="badge"
+                    [ngClass]="getStateInfo(donation.purchaseState).class">
+                    {{ getStateInfo(donation.purchaseState).label }}
+                  </span>
+                </td>
+                <td>
+                  <span class="text-muted">{{ donation.paymentMethod }}</span>
+                  <small class="d-block" *ngIf="donation.paymentId">
+                    ID: {{ donation.paymentId }}
+                  </small>
+                </td>
+              </tr>
+              <tr *ngIf="getFilteredDonations().length === 0">
+                <td colspan="7" class="text-center py-4">
+                  <div class="empty-state">
+                    <i class="fas fa-heart text-muted fa-3x mb-3"></i>
+                    <p class="text-muted">No se encontraron donaciones</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista de Destinaciones -->
+  <div *ngIf="activeView === 'destinations' && !isLoading">
+    <div class="row">
+      <!-- Lista de Destinaciones -->
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">
+                <i class="fas fa-map-marker-alt me-2"></i>
+                Destinaciones Disponibles ({{ getFilteredDestinations().length }})
+              </h5>
+              <div class="search-box">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [(ngModel)]="searchTerm"
+                  placeholder="Buscar destinación...">
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="destinations-list">
+              <div *ngFor="let destination of getFilteredDestinations()" class="destination-item mb-3">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div class="flex-grow-1">
+                        <h6 class="text-belgrano-celeste mb-2">{{ destination.name }}</h6>
+                        <p class="text-muted mb-1" *ngIf="destination.address">
+                          <i class="fas fa-map-marker-alt me-2"></i>
+                          {{ destination.address }}
+                        </p>
+                        <p class="text-muted mb-0" *ngIf="destination.phoneNumber">
+                          <i class="fas fa-phone me-2"></i>
+                          {{ destination.phoneNumber }}
+                        </p>
+                      </div>
+                      <div class="ms-3 d-flex flex-column align-items-end">
+                        <span 
+                          class="badge mb-2"
+                          [ngClass]="destination.state ? 'bg-success' : 'bg-danger'">
+                          {{ destination.state ? 'Activo' : 'Inactivo' }}
+                        </span>
+                        <div class="btn-group-sm">
+                          <button 
+                            type="button" 
+                            class="btn btn-sm me-1"
+                            [ngClass]="destination.state ? 'btn-warning' : 'btn-success'"
+                            (click)="toggleDestinationState(destination)"
+                            [disabled]="isSubmitting">
+                            <i class="fas" [ngClass]="destination.state ? 'fa-pause' : 'fa-play'"></i>
+                            {{ destination.state ? 'Desactivar' : 'Activar' }}
+                          </button>
+                          <button 
+                            type="button" 
+                            class="btn btn-sm btn-outline-danger"
+                            (click)="deleteDestination(destination)"
+                            [disabled]="isSubmitting">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div *ngIf="getFilteredDestinations().length === 0" class="text-center py-4">
+                <i class="fas fa-map-marker-alt text-muted fa-3x mb-3"></i>
+                <p class="text-muted">No se encontraron destinaciones</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario para Agregar Nueva Destinación -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fas fa-plus me-2"></i>
+              Agregar Nueva Destinación
+            </h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="destinationForm" (ngSubmit)="addDestination()">
+              <div class="mb-3">
+                <label for="destinationName" class="form-label">
+                  <i class="fas fa-tag me-1"></i>
+                  Nombre *
+                </label>
+                <input 
+                  type="text" 
+                  id="destinationName"
+                  class="form-control"
+                  formControlName="name"
+                  placeholder="Ej: Escuela Primaria San Martín"
+                  [class.is-invalid]="destinationForm.get('name')?.invalid && destinationForm.get('name')?.touched">
+                <div class="invalid-feedback" *ngIf="destinationForm.get('name')?.invalid && destinationForm.get('name')?.touched">
+                  El nombre es obligatorio (mínimo 3 caracteres)
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="destinationAddress" class="form-label">
+                  <i class="fas fa-map-marker-alt me-1"></i>
+                  Dirección
+                </label>
+                <textarea 
+                  id="destinationAddress"
+                  class="form-control"
+                  formControlName="address"
+                  rows="2"
+                  placeholder="Dirección completa (opcional)"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="destinationPhone" class="form-label">
+                  <i class="fas fa-phone me-1"></i>
+                  Teléfono
+                </label>
+                <input 
+                  type="tel" 
+                  id="destinationPhone"
+                  class="form-control"
+                  formControlName="phoneNumber"
+                  placeholder="Ej: +54 9 351 123-4567">
+              </div>
+
+              <button 
+                type="submit" 
+                class="btn btn-belgrano-celeste w-100"
+                [disabled]="destinationForm.invalid || isSubmitting">
+                <i class="fas fa-spinner fa-spin me-2" *ngIf="isSubmitting"></i>
+                <i class="fas fa-plus me-2" *ngIf="!isSubmitting"></i>
+                {{ isSubmitting ? 'Agregando...' : 'Agregar Destinación' }}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Estadísticas Rápidas -->
+        <div class="card mt-3">
+          <div class="card-header">
+            <h6 class="mb-0">
+              <i class="fas fa-chart-pie me-2"></i>
+              Resumen Rápido
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="stats-item mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>Total Destinaciones</span>
+                <span class="badge bg-primary">{{ destinations.length }}</span>
+              </div>
+            </div>
+            <div class="stats-item mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>Activas</span>
+                <span class="badge bg-success">{{ getActiveDestinationsCount() }}</span>
+              </div>
+            </div>
+            <div class="stats-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>Inactivas</span>
+                <span class="badge bg-danger">{{ getInactiveDestinationsCount() }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista de Estadísticas -->
+  <div *ngIf="activeView === 'stats' && !isLoading">
+    <div class="row g-4">
+      <!-- Estadísticas generales -->
+      <div class="col-12">
+        <div class="row g-3">
+          <div class="col-lg-3 col-md-6">
+            <div class="card bg-primary text-white">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h4 class="mb-0">{{ stats.totalDonations | number }}</h4>
+                    <small>Total Donaciones Aprobadas</small>
+                  </div>
+                  <i class="fas fa-heart fa-2x opacity-75"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="card bg-success text-white">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h4 class="mb-0">{{ formatPrice(stats.totalAmount) }}</h4>
+                    <small>Monto Total Recaudado</small>
+                  </div>
+                  <i class="fas fa-dollar-sign fa-2x opacity-75"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="card bg-warning text-white">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h4 class="mb-0">{{ formatPrice(stats.avgDonation) }}</h4>
+                    <small>Promedio por Donación</small>
+                  </div>
+                  <i class="fas fa-chart-line fa-2x opacity-75"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="card bg-info text-white">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h4 class="mb-0">{{ formatPrice(stats.monthlyAmount) }}</h4>
+                    <small>Donaciones Este Mes</small>
+                  </div>
+                  <i class="fas fa-calendar fa-2x opacity-75"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas por Destinación -->
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h6 class="mb-0">
+              <i class="fas fa-chart-bar me-2"></i>
+              Donaciones por Destinación
+            </h6>
+          </div>
+          <div class="card-body">
+            <div *ngIf="stats.destinationStats && stats.destinationStats.length > 0; else noStatsTemplate">
+              <div *ngFor="let destStat of stats.destinationStats; let i = index" class="destination-stat-item mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="d-flex align-items-center">
+                    <span class="badge bg-secondary me-2">{{ i + 1 }}</span>
+                    <strong class="destination-name">{{ destStat.destination }}</strong>
+                  </div>
+                  <div class="text-end">
+                    <div class="destination-amount">
+                      <strong class="text-success">{{ formatPrice(destStat.amount) }}</strong>
+                    </div>
+                    <small class="text-muted">{{ destStat.count }} donación{{ destStat.count !== 1 ? 'es' : '' }}</small>
+                  </div>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div 
+                    class="progress-bar bg-belgrano-celeste" 
+                    [style.width.%]="getDestinationPercentage(destStat.amount)">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <ng-template #noStatsTemplate>
+              <div class="text-center py-4 text-muted">
+                <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                <p class="mb-0">No hay estadísticas de donaciones disponibles</p>
+                <small>Las estadísticas aparecerán cuando se procesen donaciones</small>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumen y Destinaciones Activas -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h6 class="mb-0">
+              <i class="fas fa-info-circle me-2"></i>
+              Resumen del Sistema
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Total Destinaciones</span>
+              <span class="badge bg-primary">{{ destinations.length }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Destinaciones Activas</span>
+              <span class="badge bg-success">{{ getActiveDestinationsCount() }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Destinaciones Inactivas</span>
+              <span class="badge bg-danger">{{ getInactiveDestinationsCount() }}</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Total de Donaciones</span>
+              <span class="badge bg-info">{{ donations.length }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Donaciones Aprobadas</span>
+              <span class="badge bg-success">{{ getApprovedDonationsCount() }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span>Donaciones Pendientes</span>
+              <span class="badge bg-warning">{{ getPendingDonationsCount() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Destinaciones -->
+        <div class="card mt-3">
+          <div class="card-header">
+            <h6 class="mb-0">
+              <i class="fas fa-trophy me-2"></i>
+              Top 5 Destinaciones
+            </h6>
+          </div>
+          <div class="card-body">
+            <div *ngIf="stats.destinationStats && stats.destinationStats.length > 0; else noTopDestinations">
+              <div *ngFor="let destStat of getTopDestinations(); let i = index" class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                  <span class="badge me-2" [ngClass]="getTopBadgeClass(i)">{{ i + 1 }}</span>
+                  <span class="fw-bold">{{ destStat.destination }}</span>
+                </div>
+                <span class="fw-bold text-success">{{ formatPrice(destStat.amount) }}</span>
+              </div>
+            </div>
+            
+            <ng-template #noTopDestinations>
+              <div class="text-center py-3 text-muted">
+                <i class="fas fa-trophy fa-2x mb-2"></i>
+                <p class="mb-0">No hay ranking disponible</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

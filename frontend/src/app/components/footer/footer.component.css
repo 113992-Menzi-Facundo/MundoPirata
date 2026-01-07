@@ -1,0 +1,45 @@
+/* Estilos para el footer */
+footer {
+  margin-top: auto;
+}
+
+footer h5 {
+  color: var(--belgrano-celeste);
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+footer ul li {
+  margin-bottom: 0.5rem;
+}
+
+footer a {
+  transition: all 0.3s ease;
+}
+
+footer a:hover {
+  color: var(--belgrano-blanco) !important;
+  text-decoration: underline !important;
+  transform: translateX(5px);
+}
+
+.social-links a {
+  font-size: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.social-links a:hover {
+  opacity: 0.8;
+}
+
+/* Responsive para el footer */
+@media (max-width: 768px) {
+  footer .text-md-end {
+    text-align: left !important;
+    margin-top: 1rem;
+  }
+  
+  footer .social-links {
+    justify-content: flex-start;
+  }
+} 

@@ -1,0 +1,210 @@
+<div class="main-content">
+  <div class="container mt-5 pt-4">
+    <!-- Header Section -->
+    <div class="header-section mb-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h1 class="page-title">
+            <i class="fas fa-map-marked-alt me-3"></i>
+            Lugares Emblemáticos de Belgrano
+          </h1>
+          <p class="page-subtitle">Descubre todos los lugares importantes del Club Atlético Belgrano</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="search-section mb-4">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Buscar ubicaciones por nombre, dirección o descripción..."
+                [(ngModel)]="searchTerm"
+                (input)="applySearch()">
+              <button 
+                *ngIf="searchTerm" 
+                class="clear-search-btn" 
+                (click)="clearSearch()"
+                title="Limpiar búsqueda">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <button 
+            class="btn btn-outline-primary refresh-btn" 
+            (click)="refreshLocations()"
+            [disabled]="isLoading"
+            title="Actualizar ubicaciones">
+            <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i>
+            Actualizar
+          </button>
+        </div>
+      </div>
+      
+      <!-- Results Counter -->
+      <div *ngIf="getLocationStats().hasFilter" class="search-results mt-2">
+        <small class="text-muted">
+          <i class="fas fa-info-circle me-1"></i>
+          Mostrando {{ getLocationStats().filtered }} de {{ getLocationStats().total }} ubicaciones
+        </small>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      {{ error }}
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+        <p class="loading-text">Cargando ubicaciones...</p>
+      </div>
+    </div>
+
+    <!-- Locations Cards Grid -->
+    <div *ngIf="!isLoading" class="locations-grid">
+      <!-- No results message -->
+      <div *ngIf="filteredLocations.length === 0" class="no-results-container">
+        <div class="no-results-content">
+          <i class="fas fa-search no-results-icon"></i>
+          <h3>No se encontraron ubicaciones</h3>
+          <p class="text-muted" *ngIf="searchTerm">
+            Prueba ajustando tu búsqueda: "{{ searchTerm }}"
+          </p>
+          <p class="text-muted" *ngIf="!searchTerm">
+            No hay ubicaciones disponibles en este momento
+          </p>
+          <button 
+            *ngIf="searchTerm" 
+            class="btn btn-outline-primary"
+            (click)="clearSearch()">
+            <i class="fas fa-times me-2"></i>
+            Limpiar búsqueda
+          </button>
+        </div>
+      </div>
+
+      <!-- Location Cards -->
+      <div class="row" *ngIf="filteredLocations.length > 0">
+        <div 
+          *ngFor="let location of filteredLocations; trackBy: trackByLocationId" 
+          class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
+          
+          <div class="location-card">
+            <!-- Card Image -->
+            <div class="card-image">
+              <img [src]="getLocationImage(location.name)" 
+                   [alt]="location.name" 
+                   class="card-img">
+              <div class="image-overlay">
+                <span class="location-badge" [class]="getLocationBadgeClass(location.name)">
+                  <i [class]="getLocationIcon(location.name)"></i>
+                  {{ getLocationTypeLabel(location.name) }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="card-content">
+              <!-- Card Header -->
+              <div class="card-header">
+                <h4 class="card-title">{{ location.name }}</h4>
+                <div class="card-actions">
+                  <button 
+                    class="btn btn-primary btn-sm"
+                    (click)="openInGoogleMaps(location)"
+                    title="Abrir en Google Maps">
+                    <i class="fas fa-external-link-alt"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card Body -->
+              <div class="card-body">
+                <div class="location-info">
+                  <div class="info-item">
+                    <i class="fas fa-map-marker-alt info-icon"></i>
+                    <span class="info-text">{{ location.address }}</span>
+                  </div>
+                  
+                  <div *ngIf="location.description" class="info-item">
+                    <i class="fas fa-info-circle info-icon"></i>
+                    <span class="info-text">{{ truncateText(location.description, 80) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card Footer -->
+              <div class="card-footer">
+                <div class="location-meta">
+                  <div class="meta-item">
+                    <i class="fas fa-user meta-icon"></i>
+                    <span class="meta-text">{{ location.authorName }}</span>
+                  </div>
+                </div>
+                
+                <button 
+                  class="btn btn-belgrano maps-button"
+                  (click)="openInGoogleMaps(location)">
+                  <i class="fas fa-directions me-2"></i>
+                  Cómo llegar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Section -->
+    <div class="help-section mt-4" *ngIf="!isLoading">
+      <div class="row">
+        <div class="col-12">
+          <div class="help-card">
+            <div class="help-header">
+              <h5>
+                <i class="fas fa-question-circle me-2"></i>
+                ¿Cómo usar el mapa de ubicaciones?
+              </h5>
+            </div>
+            <div class="help-content">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="help-item">
+                    <i class="fas fa-search help-icon"></i>
+                    <h6>Buscar</h6>
+                    <p>Utiliza el buscador para encontrar ubicaciones específicas por nombre, dirección o descripción</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="help-item">
+                    <i class="fas fa-directions help-icon"></i>
+                    <h6>Navegar</h6>
+                    <p>Haz clic en "Cómo llegar" para abrir la navegación en Google Maps</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="help-item">
+                    <i class="fas fa-map-marked-alt help-icon"></i>
+                    <h6>Explorar</h6>
+                    <p>Cada ubicación muestra información detallada, dirección y tipo de lugar</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

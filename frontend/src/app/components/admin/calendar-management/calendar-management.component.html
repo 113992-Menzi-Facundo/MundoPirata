@@ -1,0 +1,306 @@
+<div class="calendar-management-container">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="mb-1">
+        <i class="fas fa-calendar-alt me-2 text-belgrano-celeste"></i>
+        Gestión de Calendario
+      </h3>
+      <p class="text-muted mb-0">Administra los eventos del calendario del club</p>
+    </div>
+    <button class="btn btn-belgrano-celeste" (click)="openCreateModal()">
+      <i class="fas fa-plus me-2"></i>Nuevo Evento
+    </button>
+  </div>
+
+  <!-- Filtros y búsqueda -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="searchInput" class="form-label">Buscar eventos</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-search"></i>
+            </span>
+            <input 
+              type="text" 
+              id="searchInput"
+              class="form-control" 
+              placeholder="Buscar por título, detalle, autor..."
+              [(ngModel)]="searchTerm"
+              (input)="onSearchChange()">
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="eventTypeFilter" class="form-label">Filtrar por tipo</label>
+          <select 
+            id="eventTypeFilter"
+            class="form-select" 
+            [(ngModel)]="selectedEventType"
+            (change)="onEventTypeFilterChange()">
+            <option value="all">Todos los tipos</option>
+            <option *ngFor="let type of eventTypes" [value]="type.id">{{type.type}}</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="stateFilter" class="form-label">Filtrar por estado</label>
+          <select 
+            id="stateFilter"
+            class="form-select" 
+            [(ngModel)]="selectedState"
+            (change)="onStateFilterChange()">
+            <option value="all">Todos los estados</option>
+            <option value="active">Activos</option>
+            <option value="inactive">Inactivos</option>
+          </select>
+        </div>
+        <div class="col-md-2 mb-3 d-flex align-items-end">
+          <button class="btn btn-outline-primary w-100" (click)="loadEvents()">
+            <i class="fas fa-sync-alt me-2"></i>Actualizar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-belgrano-celeste" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2 text-muted">Cargando eventos...</p>
+  </div>
+
+  <!-- Lista de eventos -->
+  <div *ngIf="!isLoading" class="card">
+    <div class="card-header bg-light">
+      <div class="row">
+        <div class="col">
+          <strong>Eventos encontrados: {{filteredEvents.length}}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <!-- Vista móvil -->
+      <div class="d-block d-lg-none">
+        <div *ngFor="let event of filteredEvents" class="border-bottom p-3">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div class="flex-grow-1">
+              <h6 class="mb-1">
+                {{event.title}}
+                <span *ngIf="isEventToday(event.date)" class="badge bg-warning text-dark ms-2">HOY</span>
+                <span *ngIf="isEventUpcoming(event.date)" class="badge bg-info ms-2">PRÓXIMO</span>
+              </h6>
+              <small class="text-muted">{{formatDate(event.date)}}</small>
+            </div>
+            <div class="text-end">
+              <span class="badge" [ngClass]="getEventTypeBadgeClass(event.eventTypeDescription)">
+                {{event.eventTypeDescription}}
+              </span>
+              <br>
+              <span class="badge mt-1" [ngClass]="getStateBadgeClass(event.state)">
+                {{getStateText(event.state)}}
+              </span>
+            </div>
+          </div>
+          <div class="mb-2" *ngIf="event.detail">
+            <small class="text-muted">{{event.detail}}</small>
+          </div>
+          <div class="mb-2">
+            <small class="text-muted">
+              <i class="fas fa-user me-1"></i>{{event.authorName}}
+            </small>
+          </div>
+          <div class="d-flex gap-2">
+            <button 
+              class="btn btn-sm btn-outline-primary"
+              (click)="openEditModal(event)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button 
+              class="btn btn-sm"
+              [ngClass]="event.state ? 'btn-outline-warning' : 'btn-outline-success'"
+              (click)="toggleEventState(event)">
+              <i class="fas" [ngClass]="event.state ? 'fa-eye-slash' : 'fa-eye'"></i>
+            </button>
+            <button 
+              class="btn btn-sm btn-outline-danger"
+              (click)="deleteEvent(event)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista desktop -->
+      <div class="d-none d-lg-block">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Evento</th>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Autor</th>
+                <th>Estado</th>
+                <th width="120">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let event of filteredEvents">
+                <td>
+                  <div>
+                    <div class="fw-bold">
+                      {{event.title}}
+                      <span *ngIf="isEventToday(event.date)" class="badge bg-warning text-dark ms-2">HOY</span>
+                      <span *ngIf="isEventUpcoming(event.date)" class="badge bg-info ms-2">PRÓXIMO</span>
+                    </div>
+                    <small class="text-muted" *ngIf="event.detail">{{event.detail}}</small>
+                  </div>
+                </td>
+                <td>
+                  <div class="fw-bold">{{formatDate(event.date)}}</div>
+                  <small class="text-muted">Creado: {{formatDateTime(event.createdAt)}}</small>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="getEventTypeBadgeClass(event.eventTypeDescription)">
+                    {{event.eventTypeDescription}}
+                  </span>
+                </td>
+                <td>{{event.authorName}}</td>
+                <td>
+                  <span class="badge" [ngClass]="getStateBadgeClass(event.state)">
+                    <i class="fas" [ngClass]="event.state ? 'fa-check' : 'fa-times'" class="me-1"></i>
+                    {{getStateText(event.state)}}
+                  </span>
+                </td>
+                <td>
+                  <div class="btn-group" role="group">
+                    <button 
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="openEditModal(event)"
+                      title="Editar evento">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button 
+                      class="btn btn-sm"
+                      [ngClass]="event.state ? 'btn-outline-warning' : 'btn-outline-success'"
+                      (click)="toggleEventState(event)"
+                      [title]="event.state ? 'Desactivar evento' : 'Activar evento'">
+                      <i class="fas" [ngClass]="event.state ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </button>
+                    <button 
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="deleteEvent(event)"
+                      title="Eliminar evento">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="filteredEvents.length === 0">
+                <td colspan="6" class="text-center py-4 text-muted">
+                  <i class="fas fa-calendar-times fa-3x mb-3"></i>
+                  <p class="mb-0">No se encontraron eventos con los filtros aplicados</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear/editar evento -->
+<div class="modal fade" [class.show]="showEventModal" [style.display]="showEventModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas" [ngClass]="isEditMode ? 'fa-edit' : 'fa-plus'" class="me-2"></i>
+          {{isEditMode ? 'Editar Evento' : 'Nuevo Evento'}}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              <label for="title" class="form-label">Título del Evento *</label>
+              <input 
+                type="text" 
+                id="title"
+                class="form-control" 
+                formControlName="title"
+                [class.is-invalid]="eventForm.get('title')?.invalid && eventForm.get('title')?.touched">
+              <div class="invalid-feedback">
+                El título es requerido (mínimo 3 caracteres)
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="date" class="form-label">Fecha *</label>
+              <input 
+                type="date" 
+                id="date"
+                class="form-control" 
+                formControlName="date"
+                [class.is-invalid]="eventForm.get('date')?.invalid && eventForm.get('date')?.touched">
+              <div class="invalid-feedback">
+                La fecha es requerida
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="eventTypeId" class="form-label">Tipo de Evento *</label>
+              <select 
+                id="eventTypeId"
+                class="form-select" 
+                formControlName="eventTypeId"
+                [class.is-invalid]="eventForm.get('eventTypeId')?.invalid && eventForm.get('eventTypeId')?.touched">
+                <option value="">Selecciona un tipo</option>
+                <option *ngFor="let type of eventTypes" [value]="type.id">{{type.type}}</option>
+              </select>
+              <div class="invalid-feedback">
+                Selecciona un tipo de evento
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="detail" class="form-label">Detalles del Evento</label>
+            <textarea 
+              id="detail"
+              class="form-control" 
+              formControlName="detail"
+              rows="4"
+              placeholder="Describe los detalles del evento (opcional)..."></textarea>
+          </div>
+
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Nota:</strong> Los eventos se crean como activos por defecto. Puedes cambiar el estado después de crear el evento.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-belgrano-celeste"
+            [disabled]="eventForm.invalid">
+            <i class="fas" [ngClass]="isEditMode ? 'fa-save' : 'fa-plus'" class="me-2"></i>
+            {{isEditMode ? 'Actualizar' : 'Crear'}} Evento
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop del modal -->
+<div class="modal-backdrop fade" [class.show]="showEventModal" *ngIf="showEventModal"></div> 

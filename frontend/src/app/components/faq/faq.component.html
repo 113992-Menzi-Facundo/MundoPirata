@@ -1,0 +1,116 @@
+<div class="main-content">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-center mb-4 titulo-seccion">
+          <i class="fas fa-question-circle text-belgrano-celeste me-3"></i>
+          Preguntas Frecuentes
+        </h2>
+        
+        <div class="row">
+          <!-- Filtros de categorías -->
+          <div class="col-12 mb-4">
+            <div class="card border-belgrano-celeste">
+              <div class="card-header bg-belgrano-celeste text-white">
+                <h5 class="mb-0">
+                  <i class="fas fa-filter me-2"></i>
+                  Filtrar por categoría
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                  <button 
+                    *ngFor="let category of categories" 
+                    class="btn"
+                    [class]="selectedCategory === category ? 'btn-belgrano-celeste' : 'btn-outline-belgrano-celeste'"
+                    (click)="selectedCategory = category">
+                    {{ category }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lista de FAQs -->
+          <div class="col-12">
+            <div class="accordion" id="faqAccordion">
+              <div *ngFor="let faq of filteredFaqs; let i = index" class="accordion-item border-belgrano-celeste mb-3">
+                <h2 class="accordion-header" [id]="'heading' + i">
+                  <button 
+                    class="accordion-button" 
+                    [class.collapsed]="!faq.isOpen"
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    [attr.data-bs-target]="'#collapse' + i"
+                    [attr.aria-expanded]="faq.isOpen"
+                    [attr.aria-controls]="'collapse' + i"
+                    (click)="toggleAnswer(faq)">
+                    <div class="d-flex align-items-center w-100">
+                      <span class="badge bg-belgrano-celeste me-3">{{ faq.category }}</span>
+                      <span class="fw-bold">{{ faq.question }}</span>
+                    </div>
+                  </button>
+                </h2>
+                <div 
+                  [id]="'collapse' + i" 
+                  class="accordion-collapse collapse" 
+                  [class.show]="faq.isOpen"
+                  [attr.aria-labelledby]="'heading' + i" 
+                  data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p class="mb-0">{{ faq.answer }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Información adicional -->
+          <div class="col-12 mt-5">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card border-belgrano-celeste h-100">
+                  <div class="card-header bg-belgrano-celeste text-white">
+                    <h5 class="mb-0">
+                      <i class="fas fa-phone me-2"></i>
+                      ¿No encontraste tu respuesta?
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <p>Si no encontraste la respuesta a tu pregunta, no dudes en contactarnos:</p>
+                    <ul class="list-unstyled">
+                      <li><i class="fas fa-envelope text-belgrano-celeste me-2"></i>info&#64;mundopirata.com</li>
+                      <li><i class="fas fa-phone text-belgrano-celeste me-2"></i>+54 351 456-7890</li>
+                      <li><i class="fas fa-map-marker-alt text-belgrano-celeste me-2"></i>Sede Social - Arturo Orgaz 550</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card border-belgrano-celeste h-100">
+                  <div class="card-header bg-belgrano-celeste text-white">
+                    <h5 class="mb-0">
+                      <i class="fas fa-clock me-2"></i>
+                      Horarios de atención
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li><strong>Lunes a Viernes:</strong> 9:00 - 18:00</li>
+                      <li><strong>Sábados:</strong> 9:00 - 13:00</li>
+                      <li><strong>Domingos:</strong> Cerrado</li>
+                    </ul>
+                    <p class="text-muted small mt-3">
+                      <i class="fas fa-info-circle me-1"></i>
+                      En días de partido, los horarios pueden variar.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

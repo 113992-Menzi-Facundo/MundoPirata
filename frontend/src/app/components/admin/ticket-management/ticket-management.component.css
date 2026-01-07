@@ -1,0 +1,295 @@
+/* =====================================================
+   ESTILOS PARA GESTIÓN DE ENTRADAS
+   ===================================================== */
+
+.ticket-management {
+  padding: 1rem;
+}
+
+/* Botones principales */
+.btn-belgrano-celeste {
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+  color: white;
+}
+
+.btn-belgrano-celeste:hover {
+  background-color: #4da6ff;
+  border-color: #4da6ff;
+  color: white;
+}
+
+.btn-outline-belgrano-celeste {
+  border-color: #5DADE2;
+  color: #5DADE2;
+}
+
+.btn-outline-belgrano-celeste:hover {
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+  color: white;
+}
+
+/* Header de gestión */
+.ticket-management h4 {
+  color: #2E86AB;
+  font-weight: 600;
+}
+
+.text-belgrano-celeste {
+  color: #5DADE2 !important;
+}
+
+/* Cards de eventos */
+.events-list .card {
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.events-list .card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  border-bottom: 1px solid #e9ecef;
+}
+
+.card-header h6 {
+  color: #2E86AB;
+  font-weight: 600;
+}
+
+/* Sectores dentro de eventos */
+.events-list .card .card-body .card {
+  border: 1px solid #dee2e6;
+  margin-bottom: 0;
+}
+
+.events-list .card .card-body .card-body {
+  padding: 1rem;
+}
+
+.events-list .card .card-body .card-title {
+  color: #495057;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Progress bar personalizada */
+.progress {
+  background-color: #e9ecef;
+  border-radius: 0.375rem;
+}
+
+.progress-bar {
+  border-radius: 0.375rem;
+}
+
+/* Badges de estado */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+}
+
+/* Estadísticas */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-info,
+.card.bg-warning {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card.bg-primary .card-body,
+.card.bg-success .card-body,
+.card.bg-info .card-body,
+.card.bg-warning .card-body {
+  padding: 1.5rem;
+}
+
+.card.bg-primary h4,
+.card.bg-success h4,
+.card.bg-info h4,
+.card.bg-warning h4 {
+  font-weight: 700;
+  font-size: 1.75rem;
+}
+
+/* Formulario de creación */
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #5DADE2;
+  box-shadow: 0 0 0 0.2rem rgba(93, 173, 226, 0.25);
+}
+
+.form-control:invalid,
+.form-select:invalid {
+  border-color: #dc3545;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+  font-size: 0.875rem;
+}
+
+/* Input group */
+.input-group-text {
+  background-color: #f8f9fa;
+  border-color: #ced4da;
+  color: #6c757d;
+}
+
+/* Botones de grupo */
+.btn-group .btn {
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-group .btn:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.btn-group .btn:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Loading spinner */
+.spinner-border.text-belgrano-celeste {
+  color: #5DADE2 !important;
+}
+
+/* Top eventos */
+.badge.bg-primary.rounded-pill {
+  background-color: #0d6efd !important;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+/* Mensajes vacíos */
+.text-center.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
+.text-center.py-5 i {
+  opacity: 0.5;
+}
+
+.text-center.py-3 {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ticket-management {
+    padding: 0.5rem;
+  }
+  
+  .btn-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .btn-group {
+    width: 100%;
+  }
+  
+  .events-list .card .card-body .row {
+    margin: 0;
+  }
+  
+  .events-list .card .card-body .col-lg-4 {
+    padding: 0.5rem;
+  }
+  
+  .card.bg-primary .card-body,
+  .card.bg-success .card-body,
+  .card.bg-info .card-body,
+  .card.bg-warning .card-body {
+    padding: 1rem;
+  }
+  
+  .card.bg-primary h4,
+  .card.bg-success h4,
+  .card.bg-info h4,
+  .card.bg-warning h4 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .d-flex.justify-content-between.align-items-center {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  
+  .btn-toolbar {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+/* ============================================
+   ESTILOS PARA LOGOS DE EQUIPOS 
+   ============================================ */
+
+.team-logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.vs-text {
+  font-weight: bold;
+  color: #2E86AB;
+  font-size: 14px;
+}
+
+/* ============================================
+   ESTILOS PARA CARDS DE PARTIDOS 
+   ============================================ */
+
+.match-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.matches-list .stat-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.matches-list .card-title {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+} 

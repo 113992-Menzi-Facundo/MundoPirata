@@ -1,0 +1,110 @@
+.titulo-seccion {
+  color: var(--belgrano-negro);
+  transition: color 0.3s;
+  font-weight: bold;
+}
+
+.card {
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.btn-outline-belgrano-celeste {
+  color: var(--belgrano-celeste);
+  border-color: var(--belgrano-celeste);
+}
+
+.btn-outline-belgrano-celeste:hover {
+  background-color: var(--belgrano-celeste);
+  color: white;
+}
+
+.btn-belgrano-celeste {
+  background-color: var(--belgrano-celeste);
+  border-color: var(--belgrano-celeste);
+  color: white;
+}
+
+.btn-belgrano-celeste:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  color: white;
+}
+
+.accordion-item {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.accordion-button {
+  background-color: white;
+  border: none;
+  padding: 1rem 1.25rem;
+  font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: var(--belgrano-celeste);
+  color: white;
+}
+
+.accordion-button:not(.collapsed) .badge {
+  background-color: white !important;
+  color: var(--belgrano-celeste) !important;
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23007bff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion-body {
+  background-color: #f8f9fa;
+  padding: 1rem 1.25rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.5em 0.75em;
+}
+
+/* Animaciones */
+.accordion-collapse {
+  transition: all 0.3s ease;
+}
+
+.accordion-button {
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .d-flex.flex-wrap {
+    justify-content: center;
+  }
+  
+  .btn {
+    margin-bottom: 0.5rem;
+  }
+  
+  .accordion-button {
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.4em 0.6em;
+  }
+} 

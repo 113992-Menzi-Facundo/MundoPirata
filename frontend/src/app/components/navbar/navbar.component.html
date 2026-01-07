@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-belgrano-celeste">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">
+      <img src="assets/logo.png" alt="Belgrano Logo" height="40" width="40" loading="eager">
+      Club Atlético Belgrano
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/noticias" routerLinkActive="active">Noticias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/mapa" routerLinkActive="active">Mapa</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/calendario" routerLinkActive="active">Calendario</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/donaciones" routerLinkActive="active">Donaciones</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/entradas" routerLinkActive="active">Entradas</a>
+        </li>
+        
+        <!-- Usuario logueado -->
+        <li class="nav-item dropdown ms-3" *ngIf="isLoggedIn">
+          <a class="nav-link dropdown-toggle text-belgrano-celeste" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user fa-lg me-1"></i>
+            {{ currentUser?.name }}
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" routerLink="/profile">
+              <i class="fas fa-user-circle me-2"></i>Mi Perfil
+            </a></li>
+            <li *ngIf="isAdmin()"><a class="dropdown-item" routerLink="/admin">
+              <i class="fas fa-cog me-2"></i>Administración
+            </a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" (click)="logout()">
+              <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+            </a></li>
+          </ul>
+        </li>
+        
+        <!-- Usuario no logueado -->
+        <li class="nav-item ms-3" *ngIf="!isLoggedIn">
+          <a class="nav-link text-belgrano-celeste" routerLink="/auth/login" routerLinkActive="active">
+            <i class="fas fa-sign-in-alt fa-lg"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav> 

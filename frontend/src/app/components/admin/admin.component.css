@@ -1,0 +1,123 @@
+/* Estilos para el panel de administración */
+.nav-link {
+  color: var(--belgrano-negro);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #f8f9fa;
+  color: var(--belgrano-celeste);
+}
+
+.nav-link.active {
+  background-color: var(--belgrano-celeste);
+  color: white;
+  border-left: 4px solid var(--belgrano-negro);
+}
+
+.nav-link i {
+  width: 20px;
+  text-align: center;
+}
+
+/* Dashboard cards */
+.admin-dashboard .card {
+  transition: transform 0.3s ease;
+}
+
+.admin-dashboard .card:hover {
+  transform: translateY(-5px);
+}
+
+/* Stats cards */
+.bg-primary {
+  background-color: var(--belgrano-celeste) !important;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+.bg-belgrano-celeste {
+  background-color: var(--belgrano-celeste) !important;
+}
+
+.bg-belgrano-azul {
+  background-color: var(--belgrano-azul) !important;
+}
+
+/* Acciones rápidas mejoradas */
+.admin-dashboard .btn {
+  min-height: 60px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.admin-dashboard .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.admin-dashboard .btn-outline-primary:hover {
+  border-color: var(--belgrano-celeste);
+  background-color: var(--belgrano-celeste);
+}
+
+.admin-dashboard .btn-outline-success:hover {
+  border-color: #28a745;
+}
+
+.admin-dashboard .btn-outline-info:hover {
+  border-color: var(--belgrano-celeste);
+}
+
+.admin-dashboard .btn-outline-warning:hover {
+  border-color: #ffc107;
+}
+
+.admin-dashboard .btn-outline-danger:hover {
+  border-color: #dc3545;
+}
+
+.admin-dashboard .btn-outline-secondary:hover {
+  border-color: #6c757d;
+}
+
+.admin-dashboard .btn-outline-dark:hover {
+  border-color: var(--belgrano-negro);
+}
+
+/* Admin sections */
+.admin-section {
+  min-height: 400px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .col-md-3.col-lg-2 {
+    margin-bottom: 1rem;
+  }
+  
+  .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .nav-link i {
+    width: 16px;
+  }
+}
+
+/* Dark theme support */
+ 

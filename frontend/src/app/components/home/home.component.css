@@ -1,0 +1,67 @@
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--belgrano-negro) !important;
+}
+
+.main-content {
+  padding-top: 80px; /* Altura del navbar */
+}
+
+/* Añadir padding al body para compensar el navbar fijo */
+body {
+  padding-top: 80px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+  color: var(--belgrano-gris-medio) !important;
+}
+
+/* Ícono de usuario celeste por defecto */
+.nav-link.text-belgrano-celeste {
+  color: var(--belgrano-celeste) !important;
+}
+
+.nav-link:hover, .nav-link:focus {
+  color: var(--belgrano-blanco) !important;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.social-links a {
+  font-size: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.social-links a:hover {
+  opacity: 0.8;
+}
+
+.btn-light {
+  background-color: var(--belgrano-blanco);
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.btn-light:hover {
+  transform: scale(1.05);
+  background-color: var(--belgrano-gris-claro);
+}

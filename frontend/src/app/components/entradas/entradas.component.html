@@ -1,0 +1,393 @@
+<!-- Sección de Entradas -->
+<div class="entradas-container">
+  <div class="container">
+    <div class="entradas-content">
+      
+      <!-- Header con padding para el navbar -->
+      <div class="entradas-header">
+        <div class="text-center mb-4">
+          <h1 class="display-4 fw-bold text-belgrano-azul">
+            <i class="fas fa-ticket-alt me-3"></i>
+            Entradas
+          </h1>
+          <p class="lead text-muted">Conseguí tu entrada para los próximos partidos del Pirata</p>
+        </div>
+
+        <!-- Controles de filtros y búsqueda -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row align-items-end">
+              <!-- Búsqueda -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">
+                  <i class="fas fa-search me-1"></i>
+                  Buscar eventos
+                </label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Buscar por evento o rival..." 
+                  [(ngModel)]="searchTerm">
+              </div>
+              
+              <!-- Filtro por precio -->
+              <div class="col-md-3 mb-3">
+                <label class="form-label">
+                  <i class="fas fa-dollar-sign me-1"></i>
+                  Rango de precio
+                </label>
+                <select class="form-select" [(ngModel)]="selectedPriceRange">
+                  <option value="">Todos los precios</option>
+                  <option value="free">Gratis</option>
+                  <option value="low">Hasta $10.000</option>
+                  <option value="medium">$10.000 - $25.000</option>
+                  <option value="high">Más de $25.000</option>
+                </select>
+              </div>
+              
+              <!-- Filtro disponibilidad -->
+              <div class="col-md-3 mb-3">
+                <label class="form-label">
+                  <i class="fas fa-filter me-1"></i>
+                  Disponibilidad
+                </label>
+                <div class="form-check form-switch">
+                  <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    [(ngModel)]="showOnlyAvailable"
+                    id="availableSwitch">
+                  <label class="form-check-label" for="availableSwitch">
+                    Solo disponibles
+                  </label>
+                </div>
+              </div>
+              
+              <!-- Botón del carrito -->
+              <div class="col-md-2 mb-3">
+                <div class="d-grid gap-2">
+                  <button class="btn btn-outline-belgrano-azul btn-sm" (click)="clearFilters()">
+                    <i class="fas fa-times me-1"></i>
+                    Limpiar
+                  </button>
+                  <button class="btn btn-belgrano-celeste btn-sm" (click)="refresh()">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Actualizar
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Carrito en una fila separada -->
+            <div class="row mt-3">
+              <div class="col-12 text-center">
+                <button 
+                  class="btn btn-belgrano-azul" 
+                  (click)="verCarrito()"
+                  [disabled]="cart.length === 0">
+                  <i class="fas fa-shopping-cart me-2"></i>
+                  Ver Carrito ({{ getCartItemCount() }})
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-belgrano-celeste" style="width: 3rem; height: 3rem;"></div>
+        <p class="mt-3 text-muted">Cargando eventos...</p>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error && !isLoading" class="alert alert-warning text-center">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-warning ms-3" (click)="refresh()">
+          <i class="fas fa-sync-alt me-1"></i>
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Vista principal de eventos -->
+      <div *ngIf="!showStadiumSections && !isLoading" class="events-grid">
+        <!-- Lista de eventos -->
+        <div class="row" *ngIf="getFilteredEvents().length > 0">
+          <div 
+            class="col-xl-4 col-lg-6 col-md-6 mb-4" 
+            *ngFor="let event of getFilteredEvents()">
+            <div class="card event-card h-100" 
+                 [class.sold-out]="areAllTicketsSoldOut(event)">
+              
+              <!-- Header de la card con logos -->
+              <div class="card-header" *ngIf="isMatchEvent(event.eventTitle)">
+                <div class="teams-header">
+                  <div class="team-info">
+                    <img src="assets/belgrano.png" alt="Belgrano" class="team-logo">
+                    <span class="team-name">Belgrano</span>
+                  </div>
+                  <div class="vs-divider">
+                    <span class="vs-text">VS</span>
+                  </div>
+                  <div class="team-info">
+                    <img [src]="getRivalTeamLogo(event.eventTitle)" [alt]="event.eventTitle" class="team-logo">
+                    <span class="team-name">{{ getRivalTeamName(event.eventTitle) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Header para eventos no-partidos -->
+              <div class="card-header text-center" *ngIf="!isMatchEvent(event.eventTitle)">
+                <h6 class="mb-0">
+                  <i class="fas fa-calendar-star me-2"></i>
+                  {{ event.eventTitle }}
+                </h6>
+              </div>
+              
+              <div class="card-body">
+                <!-- Información del evento -->
+                <div class="event-info mb-3">
+                  <h6 *ngIf="isMatchEvent(event.eventTitle)" class="mb-2">{{ event.eventDetail }}</h6>
+                  <h6 *ngIf="!isMatchEvent(event.eventTitle)" class="mb-2">{{ event.eventTitle }}</h6>
+                  <p class="text-muted mb-2" *ngIf="!isMatchEvent(event.eventTitle)">{{ event.eventDetail }}</p>
+                  <p class="mb-2">
+                    <i class="far fa-calendar-alt me-2"></i>
+                    {{ formatDate(event.eventDate) }}
+                  </p>
+                  <p class="mb-0">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    Estadio Julio César Villagra
+                  </p>
+                </div>
+
+                <!-- Información de disponibilidad -->
+                <div class="availability-info mb-3">
+                  <div class="row text-center">
+                    <div class="col-6">
+                      <small class="text-muted">Sectores</small>
+                      <div class="fw-bold">{{ event.tickets.length }}</div>
+                    </div>
+                    <div class="col-6">
+                      <small class="text-muted">Disponibles</small>
+                      <div class="fw-bold text-success">
+                        {{ getTotalAvailableTickets(event) }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Precios -->
+                <div class="price-info mb-3">
+                  <small class="text-muted">Desde</small>
+                  <div class="price-range">
+                    <span class="fw-bold fs-5 text-belgrano-celeste">
+                      {{ formatPrice(getMinPrice(event)) }}
+                    </span>
+                    <span *ngIf="event.tickets.length > 1" class="text-muted ms-1">
+                      - {{ formatPrice(getMaxPrice(event)) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card-footer">
+                <button 
+                  class="btn btn-belgrano-celeste w-100" 
+                  (click)="verSectores(event)"
+                  [disabled]="areAllTicketsSoldOut(event)">
+                  <i class="fas fa-eye me-2"></i>
+                  Ver Sectores
+                </button>
+                
+                <div *ngIf="areAllTicketsSoldOut(event)" class="text-center mt-2">
+                  <small class="text-danger">
+                    <i class="fas fa-exclamation-circle me-1"></i>
+                    Entradas agotadas
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensaje cuando no hay eventos -->
+        <div *ngIf="getFilteredEvents().length === 0 && !isLoading" class="text-center py-5">
+          <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+          <h4 class="text-muted">No hay eventos disponibles</h4>
+          <p class="text-muted">Intenta ajustar los filtros o vuelve más tarde.</p>
+          <button class="btn btn-belgrano-celeste" (click)="clearFilters()">
+            <i class="fas fa-filter me-2"></i>
+            Limpiar Filtros
+          </button>
+        </div>
+      </div>
+
+      <!-- Vista de sectores del estadio simplificada -->
+      <div *ngIf="showStadiumSections && selectedEvent" class="stadium-sections-view">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h3 class="mb-0">
+              <i class="fas fa-futbol me-2"></i>
+              {{ selectedEvent.eventTitle }}
+            </h3>
+            <small class="text-muted">{{ selectedEvent.eventDetail }}</small>
+          </div>
+          <button class="btn btn-outline-belgrano-celeste" (click)="volverAEntradas()">
+            <i class="fas fa-arrow-left me-2"></i>
+            Volver a Eventos
+          </button>
+        </div>
+        
+        <!-- Lista de los cuatro sectores del estadio -->
+        <div class="sectors-list">
+          <div class="row">
+            <div 
+              *ngFor="let section of getStadiumSections(selectedEvent)" 
+              class="col-xl-3 col-lg-4 col-md-6 mb-3">
+              <div class="card sector-card h-100" 
+                   [class.border-success]="section.available"
+                   [class.border-danger]="section.soldOut"
+                   [class.border-secondary]="!section.available && !section.soldOut">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="card-title mb-0">{{ section.name }}</h6>
+                    <span class="badge" 
+                          [class.bg-success]="section.available"
+                          [class.bg-danger]="section.soldOut"
+                          [class.bg-secondary]="!section.available && !section.soldOut">
+                      {{ section.available ? 'Disponible' : 'Agotado' }}
+                    </span>
+                  </div>
+                  
+                  <div class="sector-info mb-3">
+                    <div class="price mb-2">
+                      <span class="fw-bold fs-5" 
+                            [class.text-belgrano-celeste]="section.available"
+                            [class.text-muted]="section.soldOut">
+                        {{ formatPrice(section.basePrice) }}
+                      </span>
+                    </div>
+                    
+                    <div class="availability-stats">
+                      <small class="text-muted">
+                        <i class="fas fa-ticket-alt me-1"></i>
+                        {{ section.availableCount }} disponibles
+                      </small>
+                      <br>
+                      <small class="text-muted">
+                        <i class="fas fa-users me-1"></i>
+                        Capacidad: {{ section.capacity }}
+                      </small>
+                    </div>
+                  </div>
+                  
+                  <div class="sector-actions">
+                    <div class="d-grid gap-2" *ngIf="section.available">
+                      <button 
+                        class="btn btn-belgrano-celeste btn-sm" 
+                        (click)="comprarEntrada(getTicketLocationForSection(selectedEvent, section.id)!)">
+                        <i class="fas fa-shopping-cart me-1"></i>
+                        Comprar Ahora
+                      </button>
+                      
+                      <button 
+                        class="btn btn-outline-belgrano-celeste btn-sm" 
+                        (click)="agregarAlCarrito(getTicketLocationForSection(selectedEvent, section.id)!, 1)">
+                        <i class="fas fa-plus me-1"></i>
+                        Agregar al Carrito
+                      </button>
+                    </div>
+                    
+                    <div class="d-grid" *ngIf="section.soldOut">
+                      <button class="btn btn-outline-danger btn-sm" disabled>
+                        <i class="fas fa-times me-1"></i>
+                        Agotado
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal del Carrito -->
+<div *ngIf="showCart" class="modal-overlay" (click)="cerrarCarrito()">
+  <div class="modal-content modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>
+        <i class="fas fa-shopping-cart me-2"></i>
+        Carrito de Compras
+      </h3>
+      <button class="modal-close" (click)="cerrarCarrito()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="cart.length === 0" class="text-center py-4">
+        <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">Tu carrito está vacío</h5>
+        <p class="text-muted">Agrega algunas entradas para continuar.</p>
+      </div>
+
+      <div *ngIf="cart.length > 0">
+        <div class="cart-summary mb-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">{{ getCartItemCount() }} entrada(s) en el carrito</h6>
+            <button class="btn btn-outline-danger btn-sm" (click)="vaciarCarrito()">
+              <i class="fas fa-trash me-1"></i>
+              Vaciar carrito
+            </button>
+          </div>
+        </div>
+
+        <div class="cart-items">
+          <div 
+                          *ngFor="let item of cart; let i = index" 
+            class="cart-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="item-info">
+                <h6 class="mb-1">{{ item.ticket.locationName }}</h6>
+                <small class="text-muted">{{ selectedEvent?.eventTitle || 'Evento' }}</small>
+                <div class="mt-1">
+                  <span class="badge bg-belgrano-celeste">{{ item.quantity }}x</span>
+                  <span class="fw-bold ms-2">{{ formatPrice(item.subtotal) }}</span>
+                </div>
+              </div>
+              <button 
+                class="btn btn-outline-danger btn-sm" 
+                (click)="eliminarDelCarrito(i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cart-total mt-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Total:</h5>
+            <h5 class="mb-0 text-belgrano-celeste">{{ formatPrice(getCartTotal()) }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer" *ngIf="cart.length > 0">
+      <button class="btn btn-outline-secondary" (click)="cerrarCarrito()">
+        Seguir comprando
+      </button>
+      <button class="btn btn-belgrano-celeste" (click)="finalizarCompra()">
+        <i class="fas fa-credit-card me-2"></i>
+        Finalizar compra
+      </button>
+    </div>
+  </div>
+</div> 

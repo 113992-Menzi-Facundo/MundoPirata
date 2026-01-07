@@ -1,0 +1,411 @@
+/* =====================================================
+   ESTILOS PARA GESTIÓN DE USUARIOS
+   ===================================================== */
+
+.user-management {
+  padding: 1rem;
+}
+
+/* Botones principales */
+.btn-belgrano-celeste {
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+  color: white;
+}
+
+.btn-belgrano-celeste:hover {
+  background-color: #4da6ff;
+  border-color: #4da6ff;
+  color: white;
+}
+
+.btn-outline-belgrano-celeste {
+  border-color: #5DADE2;
+  color: #5DADE2;
+}
+
+.btn-outline-belgrano-celeste:hover {
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+  color: white;
+}
+
+.btn-outline-belgrano-celeste {
+  border-color: #5DADE2;
+  color: #5DADE2;
+}
+
+.btn-outline-belgrano-celeste:hover {
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+  color: white;
+}
+
+/* Header de gestión */
+.user-management h4 {
+  color: #5DADE2;
+  font-weight: 600;
+}
+
+.text-belgrano-celeste {
+  color: #5DADE2 !important;
+}
+
+/* Cards principales */
+.card {
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  border-bottom: 1px solid #e9ecef;
+}
+
+.card-header h5 {
+  color: #5DADE2;
+  font-weight: 600;
+}
+
+/* Tablas */
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  color: #495057;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+
+/* Avatar circular */
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5DADE2 0%, #3498db 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+/* Badges */
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.badge.bg-primary {
+  background-color: #0d6efd !important;
+}
+
+.badge.bg-success {
+  background-color: #198754 !important;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+/* Formularios */
+.form-control,
+.form-select {
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #5DADE2;
+  box-shadow: 0 0 0 0.2rem rgba(93, 173, 226, 0.25);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.input-group-text {
+  background-color: #5DADE2;
+  color: white;
+  border: none;
+  border-radius: 0.375rem 0 0 0.375rem;
+  font-weight: 600;
+}
+
+/* Estados vacíos */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+}
+
+.empty-state i {
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Items móviles */
+.user-item-mobile {
+  transition: background-color 0.2s ease;
+}
+
+.user-item-mobile:hover {
+  background-color: #f8f9fa;
+}
+
+.user-item-mobile h6 {
+  color: #5DADE2;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Grupos de botones */
+.btn-group .btn {
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-group .btn:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.btn-group .btn:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+/* Loading spinner */
+.spinner-border.text-belgrano-celeste {
+  color: #5DADE2 !important;
+}
+
+/* Modal */
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #5DADE2 0%, #3498db 100%);
+  color: white;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header .modal-title {
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  padding: 1rem 2rem;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  opacity: 0.8;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+/* Campos inválidos */
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .user-management {
+    padding: 0.5rem;
+  }
+
+  .btn-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .card-header {
+    padding: 1rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+
+  .avatar-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .modal-dialog {
+    margin: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    border-radius: 0.375rem !important;
+    margin-bottom: 0.25rem;
+  }
+
+  .table-responsive {
+    font-size: 0.8rem;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .modal-footer {
+    padding: 1rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-management-content {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Mejoras de accesibilidad */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+/* Estados deshabilitados */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Overlay del modal */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Transiciones suaves */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Hover effects mejorados */
+.card:hover .card-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: white;
+}
+
+.card:hover .card-header h5 {
+  color: white;
+}
+
+/* Estados de carga mejorados */
+.btn:disabled .spinner-border {
+  animation: spinner-border 0.75s linear infinite;
+}
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+} 

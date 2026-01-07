@@ -1,0 +1,19 @@
+.card {
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+.btn {
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.btn-eye {
+  background: var(--bs-body-bg, #fff);
+  border: 1px solid #ced4da;
+  border-left: none;
+  color: #6c757d;
+}
+.btn-eye:focus {
+  box-shadow: none;
+} 

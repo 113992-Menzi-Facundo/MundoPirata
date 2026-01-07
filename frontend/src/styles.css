@@ -1,0 +1,296 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Variables CSS para Belgrano */
+:root {
+  --belgrano-celeste: #00AEEF;
+  --belgrano-negro: #000000;
+  --belgrano-blanco: #FFFFFF;
+  --belgrano-gris-claro: #f8f9fa;
+  --belgrano-gris-medio: #6c757d;
+  --belgrano-gris-oscuro: #343a40;
+}
+
+body {
+  background-color: var(--belgrano-gris-claro);
+  transition: background-color 0.3s ease;
+  /* padding-top: 70px !important; */
+}
+
+.bg-belgrano-celeste {
+  background-color: var(--belgrano-celeste) !important;
+}
+
+.bg-belgrano-negro {
+  background-color: var(--belgrano-negro) !important;
+}
+
+.text-belgrano-celeste {
+  color: var(--belgrano-celeste) !important;
+}
+
+.text-belgrano-negro {
+  color: var(--belgrano-negro) !important;
+}
+
+.text-belgrano-blanco {
+  color: var(--belgrano-blanco) !important;
+}
+
+.border-belgrano-celeste {
+  border-color: var(--belgrano-celeste) !important;
+}
+
+.border-belgrano-negro {
+  border-color: var(--belgrano-negro) !important;
+}
+
+.main-content {
+  padding-top: 70px;
+}
+
+.home-main-content {
+  padding-top: 40px !important;
+}
+
+/* ===== ESTILOS PERSONALIZADOS PARA SWEETALERT2 ===== */
+
+/* Popup principal */
+.belgrano-popup {
+  border-radius: 15px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  border: 2px solid var(--belgrano-celeste) !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  padding: 25px !important;
+}
+
+/* Título */
+.belgrano-title {
+  color: var(--belgrano-celeste) !important;
+  font-weight: 600 !important;
+  font-size: 1.5rem !important;
+  margin-bottom: 15px !important;
+}
+
+/* Contenido */
+.belgrano-content {
+  color: #2c3e50 !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+}
+
+/* Botones personalizados */
+.belgrano-btn-primary {
+  background: linear-gradient(45deg, var(--belgrano-celeste), #0099cc) !important;
+  border: none !important;
+  color: var(--belgrano-blanco) !important;
+  font-weight: 600 !important;
+  padding: 12px 25px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 4px 15px rgba(0, 174, 239, 0.3) !important;
+}
+
+.belgrano-btn-primary:hover {
+  background: linear-gradient(45deg, #0099cc, var(--belgrano-celeste)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 174, 239, 0.4) !important;
+}
+
+.belgrano-btn-secondary {
+  background: transparent !important;
+  border: 2px solid var(--belgrano-gris-medio) !important;
+  color: var(--belgrano-gris-medio) !important;
+  font-weight: 600 !important;
+  padding: 10px 23px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.belgrano-btn-secondary:hover {
+  background: var(--belgrano-gris-medio) !important;
+  color: var(--belgrano-blanco) !important;
+  transform: translateY(-2px) !important;
+}
+
+.belgrano-btn-danger {
+  background: linear-gradient(45deg, #dc3545, #c82333) !important;
+  border: none !important;
+  color: var(--belgrano-blanco) !important;
+  font-weight: 600 !important;
+  padding: 12px 25px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3) !important;
+}
+
+.belgrano-btn-danger:hover {
+  background: linear-gradient(45deg, #c82333, #dc3545) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4) !important;
+}
+
+/* Toast personalizado */
+.belgrano-toast {
+  border-radius: 10px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  border-left: 4px solid var(--belgrano-celeste) !important;
+}
+
+.belgrano-toast-title {
+  color: var(--belgrano-celeste) !important;
+  font-weight: 600 !important;
+}
+
+.swal2-success .swal2-icon {
+  border-color: var(--belgrano-celeste) !important;
+}
+
+.swal2-success .swal2-success-circular-line-left,
+.swal2-success .swal2-success-circular-line-right,
+.swal2-success .swal2-success-fix {
+  background-color: var(--belgrano-celeste) !important;
+}
+
+.swal2-error .swal2-icon {
+  border-color: #dc3545 !important;
+}
+
+.swal2-warning .swal2-icon {
+  border-color: #ffc107 !important;
+  color: #ffc107 !important;
+}
+
+.swal2-info .swal2-icon {
+  border-color: var(--belgrano-celeste) !important;
+  color: var(--belgrano-celeste) !important;
+}
+
+.swal2-question .swal2-icon {
+  border-color: var(--belgrano-celeste) !important;
+  color: var(--belgrano-celeste) !important;
+}
+
+.swal2-timer-progress-bar {
+  background: var(--belgrano-celeste) !important;
+}
+
+.swal2-loader {
+  border-color: var(--belgrano-celeste) transparent var(--belgrano-celeste) transparent !important;
+}
+
+.delete-confirmation {
+  text-align: center;
+}
+
+.delete-confirmation .text-muted {
+  color: #6c757d !important;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.action-success {
+  text-align: center;
+}
+
+.action-success .text-muted {
+  color: #6c757d !important;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.form-errors {
+  margin-bottom: 1rem;
+}
+
+.form-errors ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.form-errors li {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.news-detail-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.news-detail-content .text-muted {
+  color: #6b7280 !important;
+}
+
+.news-detail-content .news-content {
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: #374151;
+}
+
+.purchase-details {
+  background: #f8fafc;
+  border: 2px solid var(--belgrano-celeste);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.purchase-details h6 {
+  color: var(--belgrano-celeste);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.purchase-details p {
+  margin-bottom: 0.75rem;
+  color: #374151;
+}
+
+.purchase-details strong {
+  color: var(--belgrano-negro);
+}
+
+.purchase-details hr {
+  border-color: var(--belgrano-celeste);
+  opacity: 0.3;
+}
+
+.purchase-details .text-muted {
+  color: #6b7280 !important;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .belgrano-popup {
+    margin: 10px !important;
+    padding: 20px !important;
+  }
+  
+  .belgrano-title {
+    font-size: 1.3rem !important;
+  }
+  
+  .belgrano-btn-primary,
+  .belgrano-btn-secondary,
+  .belgrano-btn-danger {
+    padding: 10px 20px !important;
+    font-size: 0.9rem !important;
+  }
+}

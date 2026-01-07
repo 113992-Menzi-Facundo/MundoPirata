@@ -1,0 +1,80 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mundo_pirata_db
+    environment:
+      MYSQL_DATABASE: mundo_pirata
+      MYSQL_USER: pirata
+      MYSQL_PASSWORD: 2004
+      MYSQL_ROOT_PASSWORD: test-password
+    volumes:
+      - db:/var/lib/mysql
+      # Mount database initialization directory (runs only on first startup)
+      - ./database:/docker-entrypoint-initdb.d
+    ports:
+      - "3307:3306"
+    networks:
+      - mundo-pirata-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  maildev:
+    image: maildev/maildev
+    container_name: mundo_pirata_maildev
+    ports:
+      - "1080:1080"  # Web UI
+      - "1025:1025"  # SMTP port
+    networks:
+      - mundo-pirata-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mundo_pirata_backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mundo_pirata?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: pirata
+      SPRING_DATASOURCE_PASSWORD: 2004
+      SPRING_WEB_CORS_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:80
+      # MailDev configuration (overrides application.properties)
+      SPRING_MAIL_HOST: maildev
+      SPRING_MAIL_PORT: 1025
+      SPRING_MAIL_USERNAME: noreply@mundopirata.com
+      SPRING_MAIL_PASSWORD: ""
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "false"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "false"
+      
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      maildev:
+        condition: service_started
+    networks:
+      - mundo-pirata-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        API_URL: ${API_URL:-http://localhost:8080}
+        MERCADOPAGO_PUBLIC_KEY: ${MERCADOPAGO_PUBLIC_KEY:-APP_USR-7455f78f-5166-463f-b145-cf2fc137b34f}
+    container_name: mundo_pirata_frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - mundo-pirata-network
+
+networks:
+  mundo-pirata-network:
+    driver: bridge
+
+volumes:
+  db:

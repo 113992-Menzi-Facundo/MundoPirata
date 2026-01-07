@@ -1,0 +1,1100 @@
+/* =====================================================
+   ESTILOS PARA GESTIÓN DE DONACIONES
+   ===================================================== */
+
+.donation-management {
+  padding: 1rem;
+}
+
+/* Botones principales */
+.btn-belgrano-celeste {
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+  color: white;
+}
+
+.btn-belgrano-celeste:hover {
+  background-color: #4da6ff;
+  border-color: #4da6ff;
+  color: white;
+}
+
+.btn-outline-belgrano-celeste {
+  border-color: #5DADE2;
+  color: #5DADE2;
+}
+
+.btn-outline-belgrano-celeste:hover {
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+  color: white;
+}
+
+.btn-outline-belgrano-celeste {
+  border-color: #5DADE2;
+  color: #5DADE2;
+}
+
+.btn-outline-belgrano-celeste:hover {
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+  color: white;
+}
+
+/* Header de gestión */
+.donation-management h4 {
+  color: #5DADE2;
+  font-weight: 600;
+}
+
+.text-belgrano-celeste {
+  color: #5DADE2 !important;
+}
+
+/* Cards de donaciones */
+.card {
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  border-bottom: 1px solid #e9ecef;
+}
+
+.card-header h5,
+.card-header h6 {
+  color: #5DADE2;
+  font-weight: 600;
+}
+
+/* Tabla */
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  color: #495057;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+
+/* Badges de estado */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  font-weight: 600;
+}
+
+.bg-success {
+  background-color: #198754 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.bg-info {
+  background-color: #0dcaf0 !important;
+}
+
+.bg-primary {
+  background-color: #0d6efd !important;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+}
+
+/* Estadísticas */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-info,
+.card.bg-warning {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-info:hover,
+.card.bg-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card.bg-primary .card-body,
+.card.bg-success .card-body,
+.card.bg-info .card-body,
+.card.bg-warning .card-body {
+  padding: 1.5rem;
+}
+
+.card.bg-primary h4,
+.card.bg-success h4,
+.card.bg-info h4,
+.card.bg-warning h4 {
+  font-weight: 700;
+  font-size: 1.75rem;
+}
+
+/* Estadísticas de destinaciones */
+.destination-stat-item {
+  border-bottom: 1px solid #f1f3f4;
+  padding-bottom: 0.75rem;
+}
+
+.destination-stat-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.destination-name {
+  color: #5DADE2;
+  font-size: 0.95rem;
+}
+
+.destination-amount {
+  font-size: 1.1rem;
+}
+
+.progress-bar.bg-belgrano-celeste {
+  background-color: #5DADE2 !important;
+}
+
+/* Formularios */
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #5DADE2;
+  box-shadow: 0 0 0 0.2rem rgba(93, 173, 226, 0.25);
+}
+
+/* Loading spinner */
+.spinner-border.text-belgrano-celeste {
+  color: #5DADE2 !important;
+}
+
+/* Estados vacíos */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+}
+
+.empty-state i {
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Acciones de destinaciones */
+.btn-group-sm .btn {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.destination-item .card {
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.destination-item .card:hover {
+  border-color: #5DADE2;
+  box-shadow: 0 2px 8px rgba(93, 173, 226, 0.15);
+}
+
+/* Formulario de nueva destinación */
+.form-control:focus,
+.form-select:focus {
+  border-color: #5DADE2;
+  box-shadow: 0 0 0 0.2rem rgba(93, 173, 226, 0.25);
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
+/* Info de usuario y destino */
+.user-info,
+.destination-info {
+  line-height: 1.4;
+}
+
+.user-info strong,
+.destination-info strong {
+  color: #495057;
+  font-weight: 600;
+}
+
+.user-info small,
+.destination-info small {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+/* Montos */
+.amount {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .donation-management {
+    padding: 0.5rem;
+  }
+
+  .btn-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .btn-group {
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    flex: 1;
+  }
+
+  .card-header {
+    padding: 1rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn-group .btn {
+    border-radius: 0.375rem !important;
+    margin-bottom: 0.25rem;
+  }
+
+  .btn-group .btn:last-child {
+    margin-bottom: 0;
+  }
+
+  .table-responsive {
+    font-size: 0.8rem;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+.donation-management-container {
+  padding: 2rem 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.donation-management-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header y navegación */
+.btn-toolbar {
+  gap: 0.5rem;
+}
+
+.btn-group .btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-group .btn:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.btn-group .btn:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Botones de Belgrano */
+.btn-belgrano-azul {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-belgrano-azul:hover {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.btn-belgrano-celeste {
+  background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-belgrano-celeste:hover {
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+}
+
+.btn-outline-belgrano-azul {
+  border: 2px solid #1e3a8a;
+  color: #1e3a8a;
+  background: transparent;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-belgrano-azul:hover {
+  background: #1e3a8a;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-outline-belgrano-celeste {
+  border: 2px solid #0ea5e9;
+  color: #0ea5e9;
+  background: transparent;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-belgrano-celeste:hover {
+  background: #0ea5e9;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Cards principales */
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 15px 15px 0 0 !important;
+  padding: 1.25rem 1.5rem;
+}
+
+.card-header h5,
+.card-header h6 {
+  color: #1e3a8a;
+  font-weight: 600;
+  margin: 0;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Tablas */
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  color: #495057;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+
+/* Badges */
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.bg-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.bg-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.bg-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+}
+
+.bg-info {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%) !important;
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+}
+
+.bg-light {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  color: #495057 !important;
+}
+
+/* Formularios */
+.form-control,
+.form-select {
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+/* Estados vacíos */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.empty-state i {
+  color: #adb5bd;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Información de usuario y destinación */
+.user-info,
+.destination-info {
+  line-height: 1.4;
+}
+
+.user-info strong,
+.destination-info strong {
+  color: #1e3a8a;
+  font-weight: 600;
+}
+
+.user-info small,
+.destination-info small {
+  color: #6c757d;
+  font-size: 0.8rem;
+}
+
+/* Montos */
+.amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Destinaciones */
+.destination-item .card {
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.destination-item .card:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+}
+
+.destination-item h6 {
+  color: #1e3a8a;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Estadísticas */
+.stats-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.stats-item:last-child {
+  border-bottom: none;
+}
+
+.stats-item .badge {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.6rem;
+}
+
+/* Cards de estadísticas */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-info {
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card.bg-primary .card-body,
+.card.bg-success .card-body,
+.card.bg-warning .card-body,
+.card.bg-info .card-body {
+  padding: 1.5rem;
+}
+
+.card.bg-primary h4,
+.card.bg-success h4,
+.card.bg-warning h4,
+.card.bg-info h4 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.card.bg-primary small,
+.card.bg-success small,
+.card.bg-warning small,
+.card.bg-info small {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Loading */
+.spinner-border {
+  border-width: 0.25em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .donation-management-container {
+    padding: 1rem 0;
+  }
+  
+  .btn-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .btn-group {
+    width: 100%;
+  }
+  
+  .btn-group .btn {
+    flex: 1;
+  }
+  
+  .card-header {
+    padding: 1rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn-group {
+    flex-direction: column;
+  }
+  
+  .btn-group .btn {
+    border-radius: 8px !important;
+    margin-bottom: 0.25rem;
+  }
+  
+  .btn-group .btn:last-child {
+    margin-bottom: 0;
+  }
+  
+  .table-responsive {
+    font-size: 0.8rem;
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.donation-management-content {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Mejoras de accesibilidad */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+/* Estados deshabilitados */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Colores de texto */
+.text-belgrano-azul {
+  color: #1e3a8a !important;
+}
+
+.text-belgrano-celeste {
+  color: #0ea5e9 !important;
+}
+
+.header-section {
+  background: linear-gradient(135deg, #003d82 0%, #4da6ff 100%);
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.header-section h2 {
+  color: white;
+  margin-bottom: 5px;
+}
+
+.nav-tabs-container {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: #6c757d;
+  font-weight: 500;
+  padding: 10px 20px;
+  margin-right: 5px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: #e9ecef;
+  color: #003d82;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #003d82;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,61,130,0.3);
+}
+
+/* Donations Table */
+.table-responsive {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.table th {
+  background-color: #003d82;
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 15px;
+}
+
+.table td {
+  padding: 15px;
+  vertical-align: middle;
+  border: none;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.table-row:hover {
+  background-color: #f8f9fa;
+}
+
+.user-info strong {
+  color: #003d82;
+}
+
+.destination-info strong {
+  color: #28a745;
+}
+
+.amount {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #003d82;
+}
+
+/* Badges */
+.badge-warning {
+  background-color: #ffc107 !important;
+  color: #000;
+}
+
+.badge-success {
+  background-color: #28a745 !important;
+}
+
+.badge-danger {
+  background-color: #dc3545 !important;
+}
+
+.badge-secondary {
+  background-color: #6c757d !important;
+}
+
+/* Filters Section */
+.filters-section {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #003d82;
+  box-shadow: 0 0 0 0.2rem rgba(0,61,130,0.25);
+}
+
+/* Destinations */
+.destinations-section {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.destination-card .card {
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.destination-card .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.destination-info .card-title {
+  color: #003d82;
+  font-weight: 600;
+}
+
+.destination-actions .btn {
+  margin-left: 5px;
+}
+
+.add-destination-section {
+  position: sticky;
+  top: 20px;
+}
+
+.add-destination-section .card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.add-destination-section .card-header {
+  background: linear-gradient(135deg, #003d82 0%, #4da6ff 100%);
+  border: none;
+  border-radius: 10px 10px 0 0;
+}
+
+/* Stats Cards */
+.card.bg-primary {
+  background: linear-gradient(135deg, #003d82 0%, #4da6ff 100%) !important;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0,61,130,0.3);
+}
+
+.card.bg-success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+  border: none;
+  box-shadow: 0 4px 8px rgba(40,167,69,0.3);
+}
+
+.card.bg-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%) !important;
+  border: none;
+  box-shadow: 0 4px 8px rgba(23,162,184,0.3);
+}
+
+.card.bg-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+  border: none;
+  box-shadow: 0 4px 8px rgba(255,193,7,0.3);
+  color: #000 !important;
+}
+
+.card h6.card-title {
+  font-size: 0.9em;
+  opacity: 0.9;
+  margin-bottom: 5px;
+}
+
+.card h3 {
+  font-weight: bold;
+  font-size: 1.8em;
+}
+
+/* Destination Stats */
+.destination-stats {
+  padding: 10px 0;
+}
+
+.destination-stat-item {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.destination-name strong {
+  color: #003d82;
+  font-size: 1.1em;
+}
+
+.destination-amount strong {
+  color: #28a745;
+  font-size: 1.2em;
+}
+
+.progress {
+  border-radius: 10px;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #003d82 0%, #4da6ff 100%);
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,61,130,0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,61,130,0.4);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border: none;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  border: none;
+  color: #000;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  border: none;
+}
+
+.btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+/* Form Validation */
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875em;
+  margin-top: 5px;
+}
+
+/* Loading */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .donation-management-container {
+    padding: 10px;
+  }
+  
+  .header-section {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .nav-tabs .nav-link {
+    padding: 8px 12px;
+    font-size: 0.9em;
+  }
+  
+  .table td, .table th {
+    padding: 10px 8px;
+    font-size: 0.9em;
+  }
+  
+  .destination-actions .btn {
+    padding: 5px 8px;
+    font-size: 0.8em;
+  }
+  
+  .card h3 {
+    font-size: 1.5em;
+  }
+} 
